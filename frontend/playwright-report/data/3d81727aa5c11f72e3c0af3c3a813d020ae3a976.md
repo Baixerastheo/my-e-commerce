@@ -1,0 +1,88 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - link "My E-commerce" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e7]: My E-commerce
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - link "Accueil" [ref=e10] [cursor=pointer]:
+              - /url: /
+              - img [ref=e11]
+              - generic [ref=e14]: Accueil
+          - listitem [ref=e15]:
+            - link "Produits" [ref=e16] [cursor=pointer]:
+              - /url: /products
+              - img [ref=e17]
+              - generic [ref=e21]: Produits
+          - listitem [ref=e22]:
+            - link "Panier" [ref=e23] [cursor=pointer]:
+              - /url: /cart
+              - img [ref=e24]
+              - generic [ref=e28]: Panier
+    - main [ref=e29]:
+      - generic [ref=e32]:
+        - paragraph [ref=e33]: Votre panier est vide
+        - link "Continuer vos achats" [ref=e34] [cursor=pointer]:
+          - /url: /products
+    - contentinfo [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - heading "My E-commerce" [level=3] [ref=e39]
+            - paragraph [ref=e40]: Votre destination pour des produits de qualité. Shopping en ligne simple et sécurisé.
+          - generic [ref=e41]:
+            - heading "Navigation" [level=4] [ref=e42]
+            - list [ref=e43]:
+              - listitem [ref=e44]:
+                - link "Accueil" [ref=e45] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e46]:
+                - link "Produits" [ref=e47] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e48]:
+                - link "Panier" [ref=e49] [cursor=pointer]:
+                  - /url: /cart
+          - generic [ref=e50]:
+            - heading "Contact" [level=4] [ref=e51]
+            - list [ref=e52]:
+              - listitem [ref=e53]:
+                - link "contact@myecommerce.com" [ref=e54] [cursor=pointer]:
+                  - /url: mailto:contact@myecommerce.com
+              - listitem [ref=e55]:
+                - link "+33 1 23 45 67 89" [ref=e56] [cursor=pointer]:
+                  - /url: tel:+33123456789
+          - generic [ref=e57]:
+            - heading "Suivez-nous" [level=4] [ref=e58]
+            - generic [ref=e59]:
+              - link "Facebook" [ref=e60] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e61]
+              - link "Twitter" [ref=e63] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e64]
+              - link "Instagram" [ref=e66] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e67]
+        - paragraph [ref=e72]: © 2025 My E-commerce. Tous droits réservés.
+  - generic:
+    - img
+  - generic:
+    - generic:
+      - generic:
+        - button "Go to parent" [disabled]
+        - button "Open in editor"
+        - button "Close"
+  - generic [ref=e73]:
+    - button "Toggle Nuxt DevTools" [ref=e74] [cursor=pointer]:
+      - img [ref=e75]
+    - generic "Page load time" [ref=e78]:
+      - generic [ref=e79]: "121"
+      - generic [ref=e80]: ms
+    - button "Toggle Component Inspector" [ref=e82] [cursor=pointer]:
+      - img [ref=e83]
+```

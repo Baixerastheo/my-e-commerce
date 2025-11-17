@@ -14,10 +14,20 @@ export const useProductStore = defineStore("product", () => {
   }
 
   const products = ref<Product[]>([]);
+  
+  const filteredProducts = ref<Product[]>([]);
+  
+  // Terme de recherche partagé entre tous les composants
+  const searchTerm = ref<string>('');
 
   const loading = ref(false);
 
   const error = ref<string | null>(null);
+  
+  // Fonction pour mettre à jour les produits filtrés
+  const setFilteredProducts = (filtered: Product[]) => {
+    filteredProducts.value = filtered;
+  };
 
   const getProducts = async () => {
     if (loading.value === true) return;
@@ -39,7 +49,8 @@ export const useProductStore = defineStore("product", () => {
   const getProductById = async (id: number) => {
     try {
       error.value = null;
-      loading.value = true;
+      // Ne pas utiliser loading.value pour getProductById pour éviter les conflits
+      // La page de détail gère son propre état de chargement
 
       const response = await axios.get(
         `http://localhost:3001/api/products/${id}`
@@ -48,8 +59,6 @@ export const useProductStore = defineStore("product", () => {
     } catch (err) {
       error.value = err instanceof Error ? err.message : String(err);
       return null;
-    } finally {
-      loading.value = false;
     }
   };
 
@@ -59,10 +68,13 @@ export const useProductStore = defineStore("product", () => {
 
   return {
     products,
+    filteredProducts,
+    searchTerm,
     loading,
     error,
     getProducts,
     getProductById,
+    setFilteredProducts,
     isLoading,
     isError,
   };

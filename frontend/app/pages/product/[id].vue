@@ -1,5 +1,10 @@
 <template>
   <div class="product-detail">
+    <NuxtLink to="/products" class="back-link">
+      ← Retour aux produits
+    </NuxtLink>
+
+
     <div v-if="loading" class="loading">
       <p>Chargement du produit...</p>
     </div>
@@ -19,7 +24,7 @@
         <p class="product-detail-category">{{ product.category }}</p>
         <p class="product-detail-description">{{ product.description }}</p>
 
-        <div class="product-detail-specs">
+        <div v-if="product.specs && product.specs.length > 0" class="product-detail-specs">
           <h2 class="specs-title">Caractéristiques</h2>
           <ul class="specs-list">
             <li v-for="(spec, index) in product.specs" :key="index" class="spec-item">
@@ -28,56 +33,53 @@
           </ul>
         </div>
 
-        <button class="add-to-cart-btn" @click="addToCart">
-          Ajouter au panier
-        </button>
+        <div class="product-quantity-section">
+          <div class="quantity-controls">
+            <label class="quantity-label">Quantité</label>
+            <div class="quantity-input-group">
+              <button 
+                @click="decreaseQuantity"
+                class="quantity-btn"
+                type="button"
+                aria-label="Diminuer la quantité"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <span class="quantity-value">{{ quantity }}</span>
+              <button 
+                @click="increaseQuantity"
+                class="quantity-btn"
+                type="button"
+                aria-label="Augmenter la quantité"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button class="add-to-cart-btn" @click="addToCart" type="button">
+            <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            Ajouter au panier
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { useProductStore } from '../../../stores/useProductStore'
+import { useProductDetail } from '../../composables/useProductDetail'
 
-const route = useRoute()
-const store = useProductStore()
-
-const product = ref<any>(null)
-const loading = ref(false)
-const error = ref<string | null>(null)
-
-onMounted(async () => {
-  const productId = parseInt(route.params.id as string)
-  
-  if (isNaN(productId)) {
-    error.value = 'ID de produit invalide'
-    return
-  }
-
-  loading.value = true
-  error.value = null
-  
-  try {
-    const fetchedProduct = await store.getProductById(productId)
-    if (fetchedProduct) {
-      product.value = fetchedProduct
-    } else {
-      error.value = store.error || 'Produit non trouvé'
-    }
-  } catch (err) {
-    error.value = err instanceof Error ? err.message : 'Erreur lors du chargement'
-  } finally {
-    loading.value = false
-  }
-})
-
-const addToCart = () => {
-  // TODO: Implémenter l'ajout au panier
-  console.log('Ajouter au panier:', product.value)
-  alert(`${product.value?.name} ajouté au panier !`)
-}
+const { product, loading, error, quantity, decreaseQuantity, increaseQuantity, addToCart } = useProductDetail()
 </script>
 
 <style scoped>

@@ -19,7 +19,7 @@
               <NuxtLink to="/" class="footer-link">Accueil</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/product" class="footer-link">Produits</NuxtLink>
+              <NuxtLink to="/products" class="footer-link">Produits</NuxtLink>
             </li>
             <li>
               <NuxtLink to="/cart" class="footer-link">Panier</NuxtLink>

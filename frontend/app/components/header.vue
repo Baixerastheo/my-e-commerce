@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { useHeader } from '../composables/useHeader'
+import { useCartStore } from '../../stores/useCartStore'
 import '../../assets/css/header.css'
 
 const { isMenuOpen, toggleMenu, closeMenu } = useHeader()
+const cartStore = useCartStore()
 </script>
 
 <template>
   <header class="navbar">
     <nav class="nav-container">
-      <!-- Logo / Titre -->
       <NuxtLink to="/" class="logo" @click="closeMenu">
         <span class="logo-text">My E-commerce</span>
       </NuxtLink>
 
-      <!-- Menu Desktop -->
       <ul class="nav-menu" :class="{ 'nav-menu-open': isMenuOpen }">
         <li>
           <NuxtLink to="/" class="nav-link" @click="closeMenu">
@@ -23,9 +23,9 @@ const { isMenuOpen, toggleMenu, closeMenu } = useHeader()
             </svg>
             <span>Accueil</span>
           </NuxtLink>
-        </li>
+        </li>   
         <li>
-          <NuxtLink to="/product" class="nav-link" @click="closeMenu">
+          <NuxtLink to="/products" class="nav-link" @click="closeMenu">
             <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="9" y1="3" x2="9" y2="21"></line>
@@ -42,11 +42,11 @@ const { isMenuOpen, toggleMenu, closeMenu } = useHeader()
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
             <span>Panier</span>
+            <span v-if="cartStore.totalItems > 0" class="cart-badge">{{ cartStore.totalItems }}</span>
           </NuxtLink>
         </li>
       </ul>
 
-      <!-- Menu Hamburger -->
       <button 
         class="hamburger" 
         :class="{ 'hamburger-open': isMenuOpen }"
@@ -59,7 +59,6 @@ const { isMenuOpen, toggleMenu, closeMenu } = useHeader()
       </button>
     </nav>
 
-    <!-- Overlay pour le menu mobile -->
     <div 
       class="menu-overlay" 
       :class="{ 'menu-overlay-visible': isMenuOpen }"
