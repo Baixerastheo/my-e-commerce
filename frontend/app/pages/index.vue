@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Produits</h1>
+    <h1>Accueil</h1>
   </div>
 </template>
 <script setup lang="ts">

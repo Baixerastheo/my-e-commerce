@@ -3,11 +3,13 @@ import { useRoute } from 'vue-router'
 import { useProductStore } from '../../stores/useProductStore'
 import { useCartStore } from '../../stores/useCartStore'
 import { useQuantity } from './useQuantity'
+import { useTracking } from './useTracking'
 
 export const useProductDetail = () => {
   const route = useRoute()
   const store = useProductStore()
   const cartStore = useCartStore()
+  const { trackProductView, trackAddToCart } = useTracking()
   const product = ref<any>(null)
   const loading = ref(true)
   const error = ref<string | null>(null)
@@ -36,6 +38,13 @@ export const useProductDetail = () => {
       
       if (fetchedProduct) {
         product.value = fetchedProduct
+        // Tracker la vue du produit
+        trackProductView({
+          id: fetchedProduct.id,
+          name: fetchedProduct.name,
+          price: fetchedProduct.price,
+          category: fetchedProduct.category
+        })
       } else {
         error.value = store.error || 'Produit non trouvé'
       }
@@ -64,6 +73,17 @@ export const useProductDetail = () => {
       for (let i = 0; i < quantity.value; i++) {
         cartStore.addToCart(product.value)
       }
+      // Tracker l'ajout au panier
+      trackAddToCart(
+        {
+          id: product.value.id,
+          name: product.value.name,
+          price: product.value.price,
+          category: product.value.category
+        },
+        quantity.value,
+        cartStore.totalPrice
+      )
       // Réinitialiser la quantité après ajout
       resetQuantity()
     }

@@ -1,8 +1,10 @@
 import { computed, watch } from 'vue'
 import { useProductStore } from '../../stores/useProductStore'
+import { useTracking } from './useTracking'
 
 export const useSearchProducts = () => {
     const store = useProductStore()
+    const { trackSearch } = useTracking()
 
     const getProductsByName = (searchTerm: string) => {
         if (!searchTerm || !searchTerm.trim()) {
@@ -17,6 +19,19 @@ export const useSearchProducts = () => {
     // Computed qui retourne les produits filtrés quand le searchTerm change
     const filteredProducts = computed(() => {
         return getProductsByName(store.searchTerm)
+    })
+
+    // Tracker les recherches et on rajoute un timeout pour éviter le spam de requêtes
+    let searchTimeout: ReturnType<typeof setTimeout> | null = null
+    watch(() => store.searchTerm, (newTerm) => {
+        if (searchTimeout) clearTimeout(searchTimeout)
+        
+        if (newTerm && newTerm.trim()) {
+            searchTimeout = setTimeout(() => {
+                const results = getProductsByName(newTerm)
+                trackSearch(newTerm, results.length)
+            }, 500) 
+        }
     })
 
     const filteredProductsCount = computed(() => {
@@ -34,7 +49,6 @@ export const useSearchProducts = () => {
         }
     }, { immediate: true })
 
-    // Retourner searchTerm du store pour le v-model
     const searchTerm = computed({
         get: () => store.searchTerm,
         set: (value: string) => {

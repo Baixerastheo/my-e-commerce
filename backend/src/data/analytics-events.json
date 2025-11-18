@@ -1,0 +1,308 @@
+[
+  {
+    "id": "1763505919269-rib4cc6t4",
+    "eventType": "product_view",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables"
+  },
+  {
+    "id": "1763505920467-nf4283ad2",
+    "eventType": "add_to_cart",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables",
+    "quantity": 1,
+    "cartValue": 1200
+  },
+  {
+    "id": "1763506782333-ntm4k4y47",
+    "eventType": "product_view",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables"
+  },
+  {
+    "id": "1763506783294-v78gffexp",
+    "eventType": "add_to_cart",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables",
+    "quantity": 1,
+    "cartValue": 1200
+  },
+  {
+    "id": "1763506802397-7i5mjodyn",
+    "eventType": "product_view",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/product/2",
+    "productId": 2,
+    "productName": "UltraBook X15",
+    "productPrice": 1500,
+    "productCategory": "Ordinateurs portables"
+  },
+  {
+    "id": "1763506803143-e269ebic4",
+    "eventType": "add_to_cart",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/product/2",
+    "productId": 2,
+    "productName": "UltraBook X15",
+    "productPrice": 1500,
+    "productCategory": "Ordinateurs portables",
+    "quantity": 1,
+    "cartValue": 1500
+  },
+  {
+    "id": "1763506804655-puldunzct",
+    "eventType": "purchase",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/cart",
+    "cartValue": 1500,
+    "quantity": 1,
+    "metadata": {
+      "items": [
+        {
+          "productId": 2,
+          "productName": "UltraBook X15",
+          "quantity": 1,
+          "price": 1500
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763506835255-7k9bcex5d",
+    "eventType": "search",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/products",
+    "searchTerm": "mac",
+    "searchResults": 1
+  },
+  {
+    "id": "1763506835257-2mabqg4cp",
+    "eventType": "search",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/products",
+    "searchTerm": "mac",
+    "searchResults": 1
+  },
+  {
+    "id": "1763506837844-hub4y9q2f",
+    "eventType": "search",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/products",
+    "searchTerm": "note",
+    "searchResults": 1
+  },
+  {
+    "id": "1763506837846-ttlgum181",
+    "eventType": "search",
+    "sessionId": "session_1763500180843_x4k3jh6vl",
+    "page": "/products",
+    "searchTerm": "note",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507264140-ehn7nly1m",
+    "eventType": "search",
+    "sessionId": "session_1763507262691_9zw46bheb",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507264143-mqtu2hu61",
+    "eventType": "search",
+    "sessionId": "session_1763507262691_9zw46bheb",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507267236-gtgr5x1z1",
+    "eventType": "search",
+    "sessionId": "session_1763507265823_0qpw8qmzc",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507267240-lz5wiwcz8",
+    "eventType": "search",
+    "sessionId": "session_1763507265823_0qpw8qmzc",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507267777-l29ww2xwz",
+    "eventType": "product_view",
+    "sessionId": "session_1763507265767_ycv0oh6o0",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables"
+  },
+  {
+    "id": "1763507268593-i8cg3svh9",
+    "eventType": "add_to_cart",
+    "sessionId": "session_1763507265767_ycv0oh6o0",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables",
+    "quantity": 1,
+    "cartValue": 1200
+  },
+  {
+    "id": "1763507268747-bdx2udc43",
+    "eventType": "product_view",
+    "sessionId": "session_1763507266390_jodi6vx18",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables"
+  },
+  {
+    "id": "1763507269207-q5ikx7qfy",
+    "eventType": "search",
+    "sessionId": "session_1763507267593_1f1g9ikio",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507269212-u950h2po5",
+    "eventType": "search",
+    "sessionId": "session_1763507267593_1f1g9ikio",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507269736-e2tn8vq4o",
+    "eventType": "add_to_cart",
+    "sessionId": "session_1763507266390_jodi6vx18",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables",
+    "quantity": 1,
+    "cartValue": 1200
+  },
+  {
+    "id": "1763507270394-1kiaqrp49",
+    "eventType": "product_view",
+    "sessionId": "session_1763507267888_gkmmbgism",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables"
+  },
+  {
+    "id": "1763507271652-4fcpthbfx",
+    "eventType": "search",
+    "sessionId": "session_1763507270191_f0taju39b",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507271655-tqzt250rw",
+    "eventType": "search",
+    "sessionId": "session_1763507270191_f0taju39b",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507272039-g0cr0rb7l",
+    "eventType": "add_to_cart",
+    "sessionId": "session_1763507267888_gkmmbgism",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables",
+    "quantity": 1,
+    "cartValue": 1200
+  },
+  {
+    "id": "1763507272713-cjrrka1n8",
+    "eventType": "product_view",
+    "sessionId": "session_1763507271216_7j5oh1cyv",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables"
+  },
+  {
+    "id": "1763507273403-jrfcn294g",
+    "eventType": "add_to_cart",
+    "sessionId": "session_1763507271216_7j5oh1cyv",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables",
+    "quantity": 1,
+    "cartValue": 1200
+  },
+  {
+    "id": "1763507274552-b44ulxgtw",
+    "eventType": "search",
+    "sessionId": "session_1763507273292_jzytgiyhv",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507274554-t11vlcurr",
+    "eventType": "search",
+    "sessionId": "session_1763507273292_jzytgiyhv",
+    "page": "/products",
+    "searchTerm": "Laptop",
+    "searchResults": 1
+  },
+  {
+    "id": "1763507274889-evigyfipz",
+    "eventType": "product_view",
+    "sessionId": "session_1763507273324_9z5ecvtdk",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables"
+  },
+  {
+    "id": "1763507275805-lhxu50ny9",
+    "eventType": "add_to_cart",
+    "sessionId": "session_1763507273324_9z5ecvtdk",
+    "page": "/product/1",
+    "productId": 1,
+    "productName": "Laptop Pro 14\"",
+    "productPrice": 1200,
+    "productCategory": "Ordinateurs portables",
+    "quantity": 1,
+    "cartValue": 1200
+  }
+]
