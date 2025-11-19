@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
+import { uid } from 'uid';
 
 const router = Router();
 const EVENTS_FILE = path.join(__dirname, '../data/analytics-events.json');
@@ -46,7 +47,7 @@ const writeEvent = (event: TrackingEvent) => {
 router.post('/track', (req: Request, res: Response) => {
   try {
     const event: TrackingEvent = {
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: uid(16),
       eventType: req.body.eventType,
       ...req.body
     };
@@ -84,9 +85,7 @@ const countBy = <T>(items: T[], keyFn: (item: T) => string | number): Record<str
 
 // Fonction pour obtenir les top N éléments
 const topN = (counts: Record<string, number>, n: number = 10) => {
-  return Object.entries(counts)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, n);
+  return Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, n);
 };
 
 // Statistiques agrégées

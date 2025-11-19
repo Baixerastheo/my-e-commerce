@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const currentYear = new Date().getFullYear()
+</script>
+
 <template>
   <footer class="footer">
     <div class="footer-container">
@@ -38,7 +42,7 @@
             </li>
             <li>
               <a href="tel:+33123456789" class="footer-link">
-                +33 1 23 45 67 89
+                +33 0 00 00 00 00
               </a>
             </li>
           </ul>
@@ -79,187 +83,6 @@
   </footer>
 </template>
 
-<script setup lang="ts">
-const currentYear = new Date().getFullYear()
-</script>
-
 <style scoped>
-.footer {
-  background-color: #fafafa;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: auto;
-}
-
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 48px 24px 24px;
-}
-
-.footer-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 48px;
-  margin-bottom: 40px;
-  align-items: start;
-}
-
-.footer-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.footer-section:first-child {
-  max-width: 300px;
-}
-
-.footer-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1d1d1f;
-  margin: 0 0 16px 0;
-  letter-spacing: -0.02em;
-}
-
-.footer-description {
-  font-size: 14px;
-  color: #6e6e73;
-  line-height: 1.7;
-  margin: 0;
-  max-width: 280px;
-}
-
-.footer-heading {
-  font-size: 13px;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin: 0 0 20px 0;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-link {
-  color: #6e6e73;
-  text-decoration: none;
-  font-size: 14px;
-  transition: color 0.2s ease;
-  display: inline-block;
-  line-height: 1.5;
-}
-
-.footer-link:hover {
-  color: #6366f1;
-}
-
-.footer-social {
-  display: flex;
-  gap: 16px;
-}
-
-.social-link {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  color: #6e6e73;
-  transition: all 0.2s ease;
-  background-color: transparent;
-}
-
-.social-link svg {
-  width: 20px;
-  height: 20px;
-}
-
-.social-link:hover {
-  color: #6366f1;
-  background-color: rgba(99, 102, 241, 0.1);
-  transform: translateY(-2px);
-}
-
-.footer-bottom {
-  padding-top: 32px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  text-align: left;
-}
-
-.footer-copyright {
-  font-size: 13px;
-  color: #6e6e73;
-  margin: 0;
-}
-
-/* Responsive */
-@media (max-width: 968px) {
-  .footer-content {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
-
-  .footer-section:first-child {
-    grid-column: 1 / -1;
-    max-width: 100%;
-  }
-
-  .footer-description {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .footer-container {
-    padding: 40px 24px 24px;
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    margin-bottom: 32px;
-  }
-
-  .footer-section:first-child {
-    grid-column: 1;
-  }
-
-  .footer-section {
-    text-align: left;
-  }
-
-  .footer-links {
-    align-items: flex-start;
-  }
-
-  .footer-social {
-    justify-content: flex-start;
-  }
-
-  .footer-bottom {
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .footer-container {
-    padding: 24px 16px 16px;
-  }
-
-  .footer-title {
-    font-size: 16px;
-  }
-
-  .footer-heading {
-    font-size: 13px;
-  }
-}
+@import '../../assets/css/footer.css';
 </style>

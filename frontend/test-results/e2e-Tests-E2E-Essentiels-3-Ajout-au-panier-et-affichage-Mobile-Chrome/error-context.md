@@ -1,0 +1,121 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - link "My E-commerce" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e7]: My E-commerce
+        - list:
+          - listitem [ref=e8]:
+            - link "Accueil" [ref=e9] [cursor=pointer]:
+              - /url: /
+              - img [ref=e10]
+              - generic [ref=e13]: Accueil
+          - listitem [ref=e14]:
+            - link "Produits" [ref=e15] [cursor=pointer]:
+              - /url: /products
+              - img [ref=e16]
+              - generic [ref=e18]: Produits
+          - listitem [ref=e19]:
+            - link "Panier 1" [ref=e20] [cursor=pointer]:
+              - /url: /cart
+              - img [ref=e21]
+              - generic [ref=e25]: Panier
+              - generic [ref=e26]: "1"
+        - button "Toggle menu" [ref=e27] [cursor=pointer]
+    - main [ref=e31]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - heading "Mon Panier" [level=2] [ref=e37]
+            - button "Vider le panier" [ref=e38] [cursor=pointer]
+          - generic [ref=e40]:
+            - img "Laptop Pro 14\"" [ref=e42]
+            - generic [ref=e43]:
+              - heading "Laptop Pro 14\"" [level=3] [ref=e44]
+              - paragraph [ref=e45]: 1200€ / unité
+              - generic [ref=e46]:
+                - generic [ref=e47]:
+                  - button "Diminuer la quantité" [ref=e48] [cursor=pointer]:
+                    - img [ref=e49]
+                  - generic [ref=e50]: "1"
+                  - button "Augmenter la quantité" [ref=e51] [cursor=pointer]:
+                    - img [ref=e52]
+                - button "Supprimer l'article" [ref=e53] [cursor=pointer]:
+                  - img [ref=e54]
+                  - text: Supprimer
+            - paragraph [ref=e57]: 1200.00€
+        - generic [ref=e59]:
+          - heading "Résumé" [level=2] [ref=e60]
+          - generic [ref=e61]:
+            - generic [ref=e62]: Sous-total
+            - generic [ref=e63]: 1200.00€
+          - generic [ref=e64]:
+            - generic [ref=e65]: Articles
+            - generic [ref=e66]: "1"
+          - generic [ref=e68]:
+            - generic [ref=e69]: Total
+            - generic [ref=e70]: 1200.00€
+          - button "Passer la commande" [ref=e71] [cursor=pointer]
+          - link "← Continuer vos achats" [ref=e72] [cursor=pointer]:
+            - /url: /products
+    - contentinfo [ref=e73]:
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - heading "My E-commerce" [level=3] [ref=e77]
+            - paragraph [ref=e78]: Votre destination pour des produits de qualité. Shopping en ligne simple et sécurisé.
+          - generic [ref=e79]:
+            - heading "Navigation" [level=4] [ref=e80]
+            - list [ref=e81]:
+              - listitem [ref=e82]:
+                - link "Accueil" [ref=e83] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e84]:
+                - link "Produits" [ref=e85] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e86]:
+                - link "Panier" [ref=e87] [cursor=pointer]:
+                  - /url: /cart
+          - generic [ref=e88]:
+            - heading "Contact" [level=4] [ref=e89]
+            - list [ref=e90]:
+              - listitem [ref=e91]:
+                - link "contact@myecommerce.com" [ref=e92] [cursor=pointer]:
+                  - /url: mailto:contact@myecommerce.com
+              - listitem [ref=e93]:
+                - link "+33 1 23 45 67 89" [ref=e94] [cursor=pointer]:
+                  - /url: tel:+33123456789
+          - generic [ref=e95]:
+            - heading "Suivez-nous" [level=4] [ref=e96]
+            - generic [ref=e97]:
+              - link "Facebook" [ref=e98] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e99]
+              - link "Twitter" [ref=e101] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e102]
+              - link "Instagram" [ref=e104] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e105]
+        - paragraph [ref=e109]: © 2025 My E-commerce. Tous droits réservés.
+  - generic:
+    - img
+  - generic:
+    - generic:
+      - generic:
+        - button "Go to parent" [disabled]
+        - button "Open in editor"
+        - button "Close"
+  - generic [ref=e110]:
+    - button "Toggle Nuxt DevTools" [ref=e111] [cursor=pointer]:
+      - img [ref=e112]
+    - generic "Page load time" [ref=e115]:
+      - generic [ref=e116]: "20"
+      - generic [ref=e117]: ms
+    - button "Toggle Component Inspector" [ref=e119] [cursor=pointer]:
+      - img [ref=e120]
+```

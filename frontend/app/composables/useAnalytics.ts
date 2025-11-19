@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import axios from 'axios'
 
 const API_URL = 'http://localhost:3001/api/analytics'
@@ -15,6 +15,16 @@ interface AnalyticsStats {
   totalCartValue: string
   totalPurchaseValue: string
   totalPurchases: number
+}
+
+const getEventTypeLabel = (type: string): string => {
+  const labels: Record<string, string> = {
+    'product_view': 'Vues de produits',
+    'add_to_cart': 'Ajouts au panier',
+    'search': 'Recherches',
+    'purchase': 'Achats'
+  }
+  return labels[type] || type
 }
 
 export const useAnalytics = () => {
@@ -41,11 +51,44 @@ export const useAnalytics = () => {
     }
   }
 
+  const topProductViewsData = computed(() => {
+    return stats.value?.topProductViews.map(item => ({
+      'ID Produit': item.productId,
+      'Nombre de vues': item.views
+    })) || []
+  })
+
+  const topProductAddsData = computed(() => {
+    return stats.value?.topProductAdds.map(item => ({
+      'ID Produit': item.productId,
+      'Nombre d\'ajouts': item.adds
+    })) || []
+  })
+
+  const topProductPurchasesData = computed(() => {
+    return stats.value?.topProductPurchases.map(item => ({
+      'ID Produit': item.productId,
+      'Nombre d\'achats': item.purchases
+    })) || []
+  })
+
+  const topSearchTermsData = computed(() => {
+    return stats.value?.topSearchTerms.map(item => ({
+      'Terme de recherche': item.term,
+      'Nombre de recherches': item.searches
+    })) || []
+  })
+
   return {
     stats,
     loading,
     error,
-    fetchStats
+    fetchStats,
+    getEventTypeLabel,
+    topProductViewsData,
+    topProductAddsData,
+    topProductPurchasesData,
+    topSearchTermsData
   }
 }
 
