@@ -10,7 +10,7 @@ export const useProductSection = () => {
         return store.products.length
     }
 
-        const displayedProducts = computed(() => {
+    const displayedProducts = computed(() => {
         if (isSearchActive.value) {
             return filteredProducts.value
         }

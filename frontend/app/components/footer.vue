@@ -8,7 +8,9 @@ const currentYear = new Date().getFullYear()
       <div class="footer-content">
         <!-- Section Brand -->
         <div class="footer-section">
-          <h3 class="footer-title">My E-commerce</h3>
+          <NuxtLink to="/" class="footer-logo-link">
+            <img src="/logo.svg" alt="My E-commerce" class="footer-logo" />
+          </NuxtLink>
           <p class="footer-description">
             Votre destination pour des produits de qualité. 
             Shopping en ligne simple et sécurisé.

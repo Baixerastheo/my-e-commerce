@@ -27,6 +27,23 @@
     max-width: 300px;
   }
   
+  .footer-logo-link {
+    display: inline-block;
+    margin-bottom: 16px;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  
+  .footer-logo-link:hover {
+    transform: scale(1.05);
+  }
+  
+  .footer-logo {
+    height: 28px;
+    width: auto;
+    display: block;
+  }
+  
   .footer-title {
     font-size: 18px;
     font-weight: 700;

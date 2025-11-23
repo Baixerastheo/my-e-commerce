@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Modern minimalist shopping bag - wider -->
+  <rect x="4" y="14" width="40" height="26" rx="3" fill="url(#logoGradient)"/>
+  <path d="M10 8 L10 14 L38 14 L38 8 C38 5.79086 36.2091 4 34 4 L14 4 C11.7909 4 10 5.79086 10 8 Z" fill="url(#logoGradient)"/>
+  <path d="M16 26 L18 26 L18 28 L30 28 L30 26 L32 26" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+

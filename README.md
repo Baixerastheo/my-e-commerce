@@ -114,7 +114,6 @@ Le backend calcule ensuite les statistiques agrégées. Le composable `useAnalyt
 
 ## TODO 
 
-- Ajouter du contenu dans la page accueil 
 - Optimiser le système de tracking
 - Améliorer l'ux de la page produits
 - 4ème scénario e2e pour passer une commande

@@ -11,7 +11,7 @@ const cartStore = useCartStore()
   <header class="navbar">
     <nav class="nav-container">
       <NuxtLink to="/" class="logo" @click="closeMenu">
-        <span class="logo-text">My E-commerce</span>
+        <img src="/logo.svg" alt="My E-commerce" class="logo-image" />
       </NuxtLink>
 
       <ul class="nav-menu" :class="{ 'nav-menu-open': isMenuOpen }">
