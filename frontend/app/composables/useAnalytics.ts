@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3001/api/analytics'
+const API_URL = 'http://localhost:3002/api/analytics'
 
 interface AnalyticsStats {
   totalEvents: number
@@ -41,7 +41,7 @@ export const useAnalytics = () => {
       stats.value = response.data
     } catch (err: any) {
       if (err.response?.status === 404) {
-        error.value = 'Backend non accessible. Vérifiez que le serveur backend est démarré sur le port 3001.'
+        error.value = 'Backend non accessible. Vérifiez que le serveur backend est démarré sur le port 3002.'
       } else {
         error.value = err instanceof Error ? err.message : 'Erreur lors du chargement des statistiques'
       }

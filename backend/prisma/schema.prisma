@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  price       Decimal  @db.Decimal(10, 2)
+  category    String   @db.VarChar(100)
+  image       String   @db.VarChar(500)
+  description String?  @db.Text
+  specs       Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  analyticsEvents AnalyticsEvent[]
+
+  @@map("products")
+}
+
+model AnalyticsEvent {
+  id              String   @id
+  eventType       String   @db.VarChar(50)
+  sessionId       String?  @db.VarChar(255)
+  page            String?  @db.VarChar(500)
+  productId       Int?
+  productName     String?  @db.VarChar(255)
+  productPrice    Decimal? @db.Decimal(10, 2)
+  productCategory String?  @db.VarChar(100)
+  quantity        Int?
+  cartValue       Decimal? @db.Decimal(10, 2)
+  searchTerm      String?  @db.VarChar(255)
+  searchResults   Int?
+  metadata        Json?
+  createdAt       DateTime @default(now())
+
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([eventType])
+  @@index([productId])
+  @@index([createdAt])
+  @@map("analytics_events")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique @db.VarChar(100)
+  email     String   @unique @db.VarChar(191)
+  password  String   @db.VarChar(255)
+  role      String   @default("user") @db.VarChar(20)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+

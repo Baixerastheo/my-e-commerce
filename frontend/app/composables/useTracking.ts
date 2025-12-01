@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3001/api/analytics'
+const API_URL = 'http://localhost:3002/api/analytics'
 
 // Générer un ID de session unique
 const getSessionId = (): string => {

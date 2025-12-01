@@ -37,7 +37,7 @@ export const useProductStore = defineStore("product", () => {
       error.value = null;
       loading.value = true;
 
-      const response = await axios.get("http://localhost:3001/api/products");
+      const response = await axios.get("http://localhost:3002/api/products");
       products.value = response.data;
     } catch (err) {
       error.value = err instanceof Error ? err.message : String(err);
@@ -53,7 +53,7 @@ export const useProductStore = defineStore("product", () => {
       // La page de détail gère son propre état de chargement
 
       const response = await axios.get(
-        `http://localhost:3001/api/products/${id}`
+        `http://localhost:3002/api/products/${id}`
       );
       return response.data;
     } catch (err) {

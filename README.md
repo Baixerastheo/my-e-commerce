@@ -1,6 +1,6 @@
 # My E-commerce
 
-Site e-commerce minimaliste avec frontend Nuxt.js et backend Express.js pour apprendre
+Site e-commerce minimaliste avec frontend Nuxt.js et backend NestJS avec Prisma pour apprendre
 les tests e2e (end-to-end) avec Playwright et le tracking de données.
 
 ## Installation
@@ -21,7 +21,7 @@ npm install
 
 ## Démarrage
 
-**Backend (port 3001):**
+**Backend (port 3002):**
 ```bash
 cd backend
 npm run dev
@@ -39,12 +39,11 @@ npm run dev
 
 ```
 my-ecommerce/
-├── backend/          # API Express.js
+├── backend/          # API NestJS avec Prisma
 │   ├── src/
-│   │   ├── app.ts
-│   │   ├── server.ts
-│   │   ├── routes/
-│   │   ├── controllers/
+│   │   ├── products/
+│   │   ├── analytics/
+│   │   ├── prisma/
 │   │   └── data/
 │   └── package.json
 │
@@ -104,7 +103,7 @@ Le backend calcule ensuite les statistiques agrégées. Le composable `useAnalyt
 ## Technologies utilisées
 
 - **Frontend:** Nuxt.js 4, Vue.js 3, Pinia, Axios, Playwright
-- **Backend:** Express.js, TypeScript, CORS
+- **Backend:** NestJS, Prisma, MySQL, TypeScript
 
 ## Ce que j'ai appris
 
