@@ -30,6 +30,9 @@ const currentYear = new Date().getFullYear()
             <li>
               <NuxtLink to="/cart" class="footer-link">Panier</NuxtLink>
             </li>
+            <li>
+              <NuxtLink to="/login" class="footer-link">Connexion</NuxtLink>
+            </li>
           </ul>
         </div>
 
@@ -75,7 +78,6 @@ const currentYear = new Date().getFullYear()
         </div>
       </div>
 
-      <!-- Copyright -->
       <div class="footer-bottom">
         <p class="footer-copyright">
           © {{ currentYear }} My E-commerce. Tous droits réservés.
