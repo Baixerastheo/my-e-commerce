@@ -4,9 +4,10 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from './config/config.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [ConfigModule, PrismaModule, ProductsModule, AnalyticsModule, UsersModule],
+  imports: [ConfigModule, PrismaModule, ProductsModule, AnalyticsModule, UsersModule, AuthModule],
 })
 export class AppModule {}
 
