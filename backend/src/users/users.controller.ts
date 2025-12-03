@@ -50,6 +50,36 @@ export class UsersController {
         return this.usersService.findOne(id);
     }
 
+    @Get(':username')
+    @ApiOperation({ summary: 'Récupérer un utilisateur par username' })
+    @ApiParam({ name: 'username', type: 'string', description: 'Username de l\'utilisateur' })
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'L\'utilisateur a été trouvé.',
+    })
+    @ApiResponse({
+        status: HttpStatus.NOT_FOUND,
+        description: 'Utilisateur non trouvé.',
+    })
+    findOneByUsername(@Param('username') username: string) {
+        return this.usersService.findOneByUsername(username);
+    }
+
+    @Get(':email')
+    @ApiOperation({ summary: 'Récupérer un utilisateur par email' })
+    @ApiParam({ name: 'email', type: 'string', description: 'Email de l\'utilisateur' })
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'L\'utilisateur a été trouvé.',
+    })
+    @ApiResponse({
+        status: HttpStatus.NOT_FOUND,
+        description: 'Utilisateur non trouvé.',
+    })
+    findOneByEmail(@Param('email') email: string) {
+        return this.usersService.findOneByEmail(email);
+    }
+    
     @Post()
     @ApiOperation({ summary: 'Créer un nouvel utilisateur' })
     @ApiResponse({
