@@ -15,6 +15,7 @@ import { AuthService } from './auth.service';
 import { ApiOperation, ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger';
 import { LocalAuthGuard } from './local-auth.guard';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -31,5 +32,16 @@ export class AuthController {
     const token = await this.authService.login(req.user);
     return { access_token: token };
   }
-    
+
+  // Register endpoint
+  @Post('register')
+  @ApiTags('auth')
+  @ApiOperation({ summary: 'Register' })
+  @ApiResponse({ status: 201, description: 'Register successful' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiBody({ type: RegisterDto })
+  async register(@Body() registerDto: RegisterDto) {
+    const token = await this.authService.register(registerDto);
+    return { access_token: token };
+  }
 }

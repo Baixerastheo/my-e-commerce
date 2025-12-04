@@ -4,6 +4,7 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 import { Result, Ok, Err } from 'oxide.ts';
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -56,5 +57,12 @@ export class AuthService {
         return this.jwtService.sign(payload);
     }
 
+    async register(registerDto: RegisterDto): Promise<string> {
+        const user = await this.usersService.create({
+            username: registerDto.email,
+            email: registerDto.email,
+            password: await bcrypt.hash(registerDto.password, 10),
+        });
+        return this.login(user);
+    }
 }
-
