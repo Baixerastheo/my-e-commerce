@@ -16,6 +16,7 @@ import { ApiOperation, ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger';
 import { LocalAuthGuard } from './local-auth.guard';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -44,4 +45,18 @@ export class AuthController {
     const token = await this.authService.register(registerDto);
     return { access_token: token };
   }
+
+
+  @Get('profile')
+  @ApiTags('auth')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get profile' })
+  @ApiResponse({ status: 200, description: 'Profile retrieved successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Profile not found'})
+  async profile(@Request() req) {
+    return await this.authService.profile(req.user);
+  }
+
+
 }

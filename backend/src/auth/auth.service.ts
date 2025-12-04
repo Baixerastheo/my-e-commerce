@@ -59,10 +59,16 @@ export class AuthService {
 
     async register(registerDto: RegisterDto): Promise<string> {
         const user = await this.usersService.create({
-            username: registerDto.email,
+            username: registerDto.username,
             email: registerDto.email,
             password: await bcrypt.hash(registerDto.password, 10),
         });
         return this.login(user);
+    }
+
+    async profile(user: { id: number }): Promise<Omit<User, 'password'>> {
+        const fullUser = await this.usersService.findOne(user.id);
+        const { password: _, ...userWithoutPassword } = fullUser;
+        return userWithoutPassword;
     }
 }
