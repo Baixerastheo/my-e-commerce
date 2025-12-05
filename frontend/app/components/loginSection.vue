@@ -1,18 +1,32 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import '../../assets/css/loginSection.css'
+import { useAuthStore } from '../../stores/useAuthStore';
 
 const email = ref('')
 const password = ref('')
 const rememberMe = ref(false)
 const showPassword = ref(false)
+const loading = ref(false)
+const errorMessage = ref<string | null>(null)
+const authStore = useAuthStore();
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
-const handleLogin = () => {
-  console.log('Login attempt:', { email: email.value, password: password.value, rememberMe: rememberMe.value })
+const handleLogin = async () => {
+  try {
+    loading.value = true;
+    errorMessage.value = null;
+    await authStore.login(email.value, password.value);
+    navigateTo('/')
+  } catch (error: any) {
+    console.error('Login failed:', error);
+    errorMessage.value = error?.response?.data?.message || error?.message || 'Une erreur est survenue lors de la connexion';
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 
@@ -95,8 +109,12 @@ const handleLogin = () => {
           </NuxtLink>
         </div>
 
-        <button type="submit" class="login-button">
-          Connexion
+        <div v-if="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <button type="submit" class="login-button" :disabled="loading">
+          {{ loading ? 'Connexion...' : 'Connexion' }}
         </button>
       </form>
 
