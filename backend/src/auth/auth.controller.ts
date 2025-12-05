@@ -11,12 +11,17 @@ import {
     UseGuards,
     Request,
   } from '@nestjs/common';
+import { Request as ExpressRequest } from 'express';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger';
 import { LocalAuthGuard } from './local-auth.guard';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
+
+interface AuthenticatedRequest extends ExpressRequest {
+  user: { id: number; email: string; role: string };
+}
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -40,6 +45,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Register' })
   @ApiResponse({ status: 201, description: 'Register successful' })
   @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 409, description: 'Email or username already exists' })
   @ApiBody({ type: RegisterDto })
   async register(@Body() registerDto: RegisterDto) {
     const token = await this.authService.register(registerDto);
@@ -54,9 +60,8 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Profile retrieved successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Profile not found'})
-  async profile(@Request() req) {
+  async profile(@Request() req: AuthenticatedRequest) {
     return await this.authService.profile(req.user);
   }
-
 
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -58,6 +58,16 @@ export class AuthService {
     }
 
     async register(registerDto: RegisterDto): Promise<string> {
+        const existingEmail = await this.usersService.findOneByEmail(registerDto.email);
+        if (existingEmail) {
+            throw new ConflictException(`Email ${registerDto.email} is already registered`);
+        }
+
+        const existingUsername = await this.usersService.findOneByUsername(registerDto.username);
+        if (existingUsername) {
+            throw new ConflictException(`Username ${registerDto.username} is already taken`);
+        }
+
         const user = await this.usersService.create({
             username: registerDto.username,
             email: registerDto.email,
