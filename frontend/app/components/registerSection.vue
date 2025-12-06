@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import '../../assets/css/loginSection.css'
+import '../../assets/css/registerSection.css'
 import { useAuthStore } from '../../stores/useAuthStore';
 
-const emit = defineEmits(['switch-to-register'])
+const emit = defineEmits(['switch-to-login'])
 
+const username = ref('')
 const email = ref('')
 const password = ref('')
-const rememberMe = ref(false)
 const showPassword = ref(false)
 const loading = ref(false)
 const errorMessage = ref<string | null>(null)
@@ -17,15 +17,15 @@ const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
-const handleLogin = async () => {
+const handleRegister = async () => {
   try {
     loading.value = true;
     errorMessage.value = null;
-    await authStore.login(email.value, password.value);
+    await authStore.register(username.value, email.value, password.value);
     navigateTo('/')
   } catch (error: any) {
-    console.error('Login failed:', error);
-    errorMessage.value = error?.response?.data?.message || error?.message || 'Une erreur est survenue lors de la connexion';
+    console.error('Register failed:', error);
+    errorMessage.value = error?.response?.data?.message || error?.message || 'Une erreur est survenue lors de l\'inscription';
   } finally {
     loading.value = false;
   }
@@ -40,10 +40,31 @@ const handleLogin = async () => {
           <img src="/logo.svg" alt="My E-commerce" class="login-logo" />
         </NuxtLink>
         <h1 class="login-title">My E-commerce</h1>
-        <p class="login-subtitle">Connectez-vous à votre compte</p>
+        <p class="login-subtitle">Créez votre compte</p>
       </div>
 
-      <form @submit.prevent="handleLogin" class="login-form">
+      <form @submit.prevent="handleRegister" class="login-form">
+        <div class="form-group">
+          <label for="username" class="form-label">Nom d'utilisateur</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input
+              id="username"
+              v-model="username"
+              type="text"
+              class="form-input"
+              placeholder="votre_nom_utilisateur"
+              required
+              minlength="3"
+              maxlength="100"
+            />
+            <div class="input-indicator"></div>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="email" class="form-label">Entrez votre email</label>
           <div class="input-wrapper">
@@ -77,6 +98,7 @@ const handleLogin = async () => {
               class="form-input"
               placeholder="••••••••"
               required
+              minlength="8"
             />
             <div class="input-indicator"></div>
             <button
@@ -97,32 +119,18 @@ const handleLogin = async () => {
           </div>
         </div>
 
-        <div class="form-options">
-          <label class="checkbox-label">
-            <input
-              v-model="rememberMe"
-              type="checkbox"
-              class="checkbox-input"
-            />
-            <span class="checkbox-text">Se souvenir de moi</span>
-          </label>
-          <NuxtLink to="/forgot-password" class="forgot-password-link">
-            Mot de passe oublié ?
-          </NuxtLink>
-        </div>
-
         <div v-if="errorMessage" class="error-message">
           {{ errorMessage }}
         </div>
 
         <button type="submit" class="login-button" :disabled="loading">
-          {{ loading ? 'Connexion...' : 'Connexion' }}
+          {{ loading ? 'Inscription...' : 'S\'inscrire' }}
         </button>
       </form>
 
       <div class="signup-section">
         <p class="signup-text">
-          Pas encore membre ? <button type="button" @click="emit('switch-to-register')" class="signup-link-button">Créer un compte</button>
+          Déjà membre ? <button type="button" @click="emit('switch-to-login')" class="signup-link-button">Se connecter</button>
         </p>
       </div>
 
@@ -142,3 +150,4 @@ const handleLogin = async () => {
     </div>
   </div>
 </template>
+

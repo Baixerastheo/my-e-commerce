@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useHeader } from '../composables/useHeader'
 import { useCartStore } from '../../stores/useCartStore'
+import { useAuthStore } from '../../stores/useAuthStore'
 import '../../assets/css/header.css'
 
 const { isMenuOpen, toggleMenu, closeMenu } = useHeader()
 const cartStore = useCartStore()
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -46,13 +48,20 @@ const cartStore = useCartStore()
           </NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/login" class="nav-link" @click="closeMenu">
+          <NuxtLink v-if="!authStore.isAuthenticated" to="/login" class="nav-link" @click="closeMenu">
             <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
               <polyline points="10 17 15 12 10 7"></polyline>
               <line x1="15" y1="12" x2="3" y2="12"></line>
             </svg>
             <span>Connexion</span>
+          </NuxtLink>
+          <NuxtLink v-else to="/profile" class="nav-link" @click="closeMenu">
+            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Profil</span>
           </NuxtLink>
         </li>
       </ul>
