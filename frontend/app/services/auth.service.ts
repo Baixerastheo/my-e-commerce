@@ -52,5 +52,12 @@ export const authService = {
             throw error;
         }
     },
-
+    logout: async (): Promise<void> => {
+        try {
+            await apiClient.post('/auth/logout');
+        } catch (error) {
+            console.error('Logout failed:', error);
+            throw error;
+        }
+    },
 };

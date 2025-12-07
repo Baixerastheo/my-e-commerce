@@ -4,8 +4,8 @@ import '../assets/css/profile.css';
 
 const authStore = useAuthStore();
 
-const handleLogout = () => {
-  authStore.logout();
+const handleLogout = async () => {
+  await authStore.logout();
   navigateTo('/login');
 };
 

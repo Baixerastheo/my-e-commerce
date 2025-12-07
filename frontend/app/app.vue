@@ -5,6 +5,9 @@
 </template>
 
 <script setup lang="ts">
+import { useAuthStore } from '../stores/useAuthStore';
+import { setInitializing, setInitPromise } from './services/api.client';
+
 useHead({
   title: 'My E-commerce',
   meta: [
@@ -16,6 +19,30 @@ useHead({
     { rel: 'alternate icon', href: '/favicon.ico' },
     { rel: 'apple-touch-icon', href: '/favicon.svg' }
   ]
+})
+
+onMounted(async () => {
+  if (process.server) {
+    return;
+  }
+
+  const authStore = useAuthStore();
+  
+  const initAuthPromise = (async () => {
+    setInitializing(true);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      await authStore.initAuth();
+    } catch (error) {
+    } finally {
+      setInitializing(false);
+    }
+  })();
+  
+  setInitPromise(initAuthPromise);
+  await initAuthPromise;
+  setInitPromise(null);
 })
 </script>
 <style>

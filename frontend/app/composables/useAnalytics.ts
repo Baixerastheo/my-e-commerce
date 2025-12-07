@@ -40,8 +40,12 @@ export const useAnalytics = () => {
       const response = await apiClient.get<AnalyticsStats>(`${API_URL}/stats`)
       stats.value = response.data
     } catch (err: any) {
-      if (err.response?.status === 404) {
+      if (err.response?.status === 403) {
+        error.value = 'Accès refusé : droits administrateur requis'
+      } else if (err.response?.status === 404) {
         error.value = 'Backend non accessible. Vérifiez que le serveur backend est démarré sur le port 3002.'
+      } else if (err.response?.status === 401) {
+        error.value = 'Vous devez être connecté pour accéder aux statistiques'
       } else {
         error.value = err instanceof Error ? err.message : 'Erreur lors du chargement des statistiques'
       }

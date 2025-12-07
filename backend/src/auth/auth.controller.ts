@@ -10,8 +10,9 @@ import {
     HttpStatus,
     UseGuards,
     Request,
+    Response,
   } from '@nestjs/common';
-import { Request as ExpressRequest } from 'express';
+import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { AuthService } from './auth.service';
 import { ApiOperation, ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -34,9 +35,18 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiBody({ type: LoginDto })
   @UseGuards(LocalAuthGuard)
-  async login(@Request() req) {
+  async login(@Request() req, @Response({ passthrough: true }) res: ExpressResponse) {
     const token = await this.authService.login(req.user);
-    return { access_token: token };
+    
+    res.cookie('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+    
+    return { access_token: token, message: 'Login successful' };
   }
 
   // Register endpoint
@@ -47,9 +57,18 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 409, description: 'Email or username already exists' })
   @ApiBody({ type: RegisterDto })
-  async register(@Body() registerDto: RegisterDto) {
+  async register(@Body() registerDto: RegisterDto, @Response({ passthrough: true }) res: ExpressResponse) {
     const token = await this.authService.register(registerDto);
-    return { access_token: token };
+    
+    res.cookie('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+    
+    return { access_token: token, message: 'Register successful' };
   }
 
 
@@ -62,6 +81,21 @@ export class AuthController {
   @ApiResponse({ status: 404, description: 'Profile not found'})
   async profile(@Request() req: AuthenticatedRequest) {
     return await this.authService.profile(req.user);
+  }
+
+  @Post('logout')
+  @ApiTags('auth')
+  @ApiOperation({ summary: 'Logout' })
+  @ApiResponse({ status: 200, description: 'Logout successful' })
+  async logout(@Response({ passthrough: true }) res: ExpressResponse) {
+    res.clearCookie('auth_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+    });
+    
+    return { message: 'Logout successful' };
   }
 
 }

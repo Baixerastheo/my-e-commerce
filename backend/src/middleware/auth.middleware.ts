@@ -19,17 +19,33 @@ export class AuthMiddleware implements NestMiddleware {
     const path = req.path;
     const method = req.method;
 
+    if (
+      path.startsWith('/api-json') || 
+      path.startsWith('/api/swagger') || 
+      path.includes('.') ||
+      (!path.startsWith('/api') && !path.startsWith('/auth'))
+    ) {
+      return next();
+    }
+
     if (this.isPublicRoute(path, method)) {
       return next();
     }
 
-    const authHeader = req.headers.authorization;
+    let token: string | null = null;
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (req.cookies?.['auth_token']) {
+      token = req.cookies['auth_token'];
+    } else {
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.substring(7);
+      }
+    }
+    
+    if (!token) {
       throw new UnauthorizedException('Token manquant ou invalide');
     }
-
-    const token = authHeader.substring(7);
 
     try {
       const secret = this.configService.get<string>('JWT_SECRET') || 'default-secret-key';
@@ -55,12 +71,10 @@ export class AuthMiddleware implements NestMiddleware {
       return true;
     }
 
-    // GET sur analytics/top-products est public pour la mise en page de la landing page
     if (method === 'GET' && normalizedPath === '/api/analytics/top-products') {
       return true;
     }
 
-    // POST sur analytics/track peut être public pour tracker les visiteurs anonymes
     if (method === 'POST' && normalizedPath === '/api/analytics/track') {
       return true;
     }
