@@ -1,22 +1,38 @@
-import { useAnalytics } from './useAnalytics'
-import { computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 import { useProductStore } from '../../stores/useProductStore'
 import type { Swiper as SwiperType } from 'swiper'
 import { Autoplay, Pagination, Navigation } from 'swiper/modules'
+import apiClient from '../services/api.client'
 
 export const useSlider = () => {
-    const { topProductViewsData, fetchStats, loading: analyticsLoading, error: analyticsError } = useAnalytics()
     const productStore = useProductStore()
     const swiperInstance = ref<SwiperType | null>(null)
+    const topProductViews = ref<Array<{ productId: number; views: number }>>([])
+    const analyticsLoading = ref(false)
+    const analyticsError = ref<string | null>(null)
+    
+    const fetchTopProducts = async () => {
+        analyticsLoading.value = true
+        analyticsError.value = null
+        try {
+            const response = await apiClient.get<{ topProductViews: Array<{ productId: number; views: number }> }>('/api/analytics/top-products')
+            topProductViews.value = response.data.topProductViews
+        } catch (err: any) {
+            analyticsError.value = err instanceof Error ? err.message : 'Erreur lors du chargement des produits populaires'
+            console.error('Top products error:', err)
+        } finally {
+            analyticsLoading.value = false
+        }
+    }
     
     const slides = computed(() => {
-        if (topProductViewsData.value.length === 0 || productStore.products.length === 0) {
+        if (topProductViews.value.length === 0 || productStore.products.length === 0) {
             return []
         }
         
-        return topProductViewsData.value.slice(0, 5)
+        return topProductViews.value.slice(0, 5)
             .map((item) => {
-                const product = productStore.products.find(p => p.id === item['ID Produit'])
+                const product = productStore.products.find(p => p.id === item.productId)
                 return product ? {
                     id: product.id,
                     image: product.image,
@@ -97,7 +113,7 @@ export const useSlider = () => {
     const initialize = async () => {
         await Promise.all([
             productStore.getProducts(),
-            fetchStats()
+            fetchTopProducts()
         ])
     }
 
@@ -105,7 +121,7 @@ export const useSlider = () => {
         slides,
         loading,
         error,
-        fetchStats,
+        fetchTopProducts,
         initialize,
         swiperOptions,
         onSwiper,

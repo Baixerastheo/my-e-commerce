@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
-import axios from 'axios'
+import apiClient from '../services/api.client'
 
-const API_URL = 'http://localhost:3002/api/analytics'
+const API_URL = '/api/analytics'
 
 interface AnalyticsStats {
   totalEvents: number
@@ -37,7 +37,7 @@ export const useAnalytics = () => {
     error.value = null
     
     try {
-      const response = await axios.get<AnalyticsStats>(`${API_URL}/stats`)
+      const response = await apiClient.get<AnalyticsStats>(`${API_URL}/stats`)
       stats.value = response.data
     } catch (err: any) {
       if (err.response?.status === 404) {

@@ -9,6 +9,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { LocalAuthGuard } from './local-auth.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { AuthMiddleware } from '../middleware/auth.middleware';
+import { RolesGuard } from '../middleware/roles.guard';
 
 @Module({
   imports: [
@@ -23,7 +25,8 @@ import { JwtAuthGuard } from './jwt-auth.guard';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, LocalAuthGuard, JwtAuthGuard],
-  controllers: [AuthController]
+  providers: [AuthService, LocalStrategy, JwtStrategy, LocalAuthGuard, JwtAuthGuard, RolesGuard],
+  controllers: [AuthController],
+  exports: [RolesGuard],
 })
 export class AuthModule {}

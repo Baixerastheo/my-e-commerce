@@ -31,10 +31,15 @@ apiClient.interceptors.response.use(
     (response) => {
         return response;
     },
-    (error) => {
-        if (error.response?.status === 401) {
+    async (error) => {
+        if (error.response?.status === 401 || error.response?.status === 403) {
             const authStore = useAuthStore();
             authStore.clearAuth();
+            
+            // Rediriger vers la page de login si on n'y est pas déjà
+            if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }

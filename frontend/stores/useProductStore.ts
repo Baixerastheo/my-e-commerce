@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import axios from "axios";
+import apiClient from "../app/services/api.client";
 
 export const useProductStore = defineStore("product", () => {
   interface Product {
@@ -37,7 +37,7 @@ export const useProductStore = defineStore("product", () => {
       error.value = null;
       loading.value = true;
 
-      const response = await axios.get("http://localhost:3002/api/products");
+      const response = await apiClient.get("/api/products");
       products.value = response.data;
     } catch (err) {
       error.value = err instanceof Error ? err.message : String(err);
@@ -49,11 +49,9 @@ export const useProductStore = defineStore("product", () => {
   const getProductById = async (id: number) => {
     try {
       error.value = null;
-      // Ne pas utiliser loading.value pour getProductById pour éviter les conflits
-      // La page de détail gère son propre état de chargement
 
-      const response = await axios.get(
-        `http://localhost:3002/api/products/${id}`
+      const response = await apiClient.get(
+        `/api/products/${id}`
       );
       return response.data;
     } catch (err) {

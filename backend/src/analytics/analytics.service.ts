@@ -168,4 +168,40 @@ export class AnalyticsService {
       totalPurchases,
     };
   }
+
+  async getTopProductViews(limit: number = 10) {
+    const events = await this.prisma.analyticsEvent.findMany();
+    
+    const countBy = <T>(
+      items: T[],
+      keyFn: (item: T) => string | number,
+    ): Record<string, number> => {
+      const counts: Record<string, number> = {};
+      items.forEach((item) => {
+        const key = String(keyFn(item));
+        counts[key] = (counts[key] || 0) + 1;
+      });
+      return counts;
+    };
+
+    const topN = (counts: Record<string, number>, n: number = 10) => {
+      return Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, n);
+    };
+
+    const productViews = countBy(
+      events.filter(
+        (e) => e.eventType === EventType.PRODUCT_VIEW && e.productId,
+      ),
+      (e) => e.productId!,
+    );
+
+    return {
+      topProductViews: topN(productViews, limit).map(([id, count]) => ({
+        productId: Number(id),
+        views: count,
+      })),
+    };
+  }
 }
