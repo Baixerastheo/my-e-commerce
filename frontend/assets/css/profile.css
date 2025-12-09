@@ -3,18 +3,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
-  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+  padding: 20px 20px;
 }
 
 .profile-card {
   width: 100%;
-  max-width: 600px;
+  max-width: 1000px;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   padding: 48px 40px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .profile-header {
@@ -60,11 +57,19 @@
   margin-top: 32px;
 }
 
+.profile-main-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
 .profile-info-group {
+  flex: 1;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: 32px;
 }
 
 .info-item {
@@ -130,6 +135,33 @@
   color: #d97706;
 }
 
+.purchase-info {
+  flex: 1;
+  max-width: 500px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  height: 450px;
+  align-self: flex-start;
+}
+
+.purchase-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.purchase-icon {
+  width: 24px;
+  height: 24px;
+  color: #6366f1;
+}
+
 .profile-actions {
   margin-top: 32px;
   padding-top: 32px;
@@ -137,7 +169,7 @@
 }
 
 .logout-button {
-  width: 100%;
+  width: 30%;
   padding: 14px 16px;
   font-size: 15px;
   font-weight: 600;
@@ -155,10 +187,10 @@
 }
 
 .logout-button:hover {
-  background: #fee2e2;
-  border-color: #fca5a5;
+  background: #dc2626;
+  color: white;
+  border: none;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
 }
 
 .logout-button:active {
@@ -170,7 +202,28 @@
   height: 18px;
 }
 
-/* Responsive */
+@media (max-width: 768px) {
+  .profile-main-layout {
+    flex-direction: column;
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .profile-info-group {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .info-item {
+    width: 100%;
+  }
+
+  .purchase-info {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
   .profile-card {
     padding: 32px 24px;
@@ -192,6 +245,27 @@
   .info-value {
     margin-left: 20px;
     font-size: 15px;
+  }
+
+  .profile-main-layout {
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .profile-info-group {
+    width: 100%;
+  }
+
+  .info-item {
+    width: 100%;
+  }
+
+  .purchase-info {
+    width: 100%;
+  }
+
+  .logout-button {
+    width: 100%;
   }
 }
 

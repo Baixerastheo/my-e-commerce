@@ -49,7 +49,7 @@ export class CreateUserDto {
     example: UserRole.USER,
     default: UserRole.USER,
   })
-  @IsOptional()
+
   @IsEnum(UserRole)
   role?: UserRole;
 }

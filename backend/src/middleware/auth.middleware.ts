@@ -65,8 +65,7 @@ export class AuthMiddleware implements NestMiddleware {
     if (this.publicRoutes.some(route => normalizedPath.startsWith(route))) {
       return true;
     }
-
-
+    
     if (method === 'GET' && (normalizedPath === '/api/products' || normalizedPath.startsWith('/api/products/'))) {
       return true;
     }

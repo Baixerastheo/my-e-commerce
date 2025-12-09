@@ -5,18 +5,31 @@ les tests e2e (end-to-end) avec Playwright et le tracking de données.
 
 ## Installation
 
+### Prérequis
+
+Ce projet utilise **pnpm** comme gestionnaire de paquets. Si vous ne l'avez pas encore installé :
+
+```bash
+npm install -g pnpm
+```
+
 ### 1. Installation des dépendances
+
+**Racine du projet:**
+```bash
+pnpm install
+```
 
 **Backend:**
 ```bash
 cd backend
-npm install
+pnpm install
 ```
 
 **Frontend:**
 ```bash
 cd frontend
-npm install
+pnpm install
 ```
 
 ## Démarrage
@@ -24,13 +37,13 @@ npm install
 **Backend (port 3002):**
 ```bash
 cd backend
-npm run dev
+pnpm run dev
 ```
 
 **Frontend (port 3000):**
 ```bash
 cd frontend
-npm run dev
+pnpm run dev
 ```
 
 > **Important:** Assurez-vous que le backend est démarré avant de lancer le frontend pour que toutes les fonctionnalités fonctionnent correctement, notamment les tests e2e.
@@ -70,7 +83,7 @@ Avant de lancer les tests, installez les navigateurs Playwright :
 
 ```bash
 cd frontend
-npx playwright install
+pnpm exec playwright install
 ```
 
 ### Commandes de test
@@ -78,13 +91,13 @@ npx playwright install
 **Lancer tous les tests e2e :**
 ```bash
 cd frontend
-npm run test:e2e
+pnpm run test:e2e
 ```
 
 **Lancer les tests avec l'interface graphique :**
 ```bash
 cd frontend
-npm run test:e2e:ui
+pnpm run test:e2e:ui
 ```
 
 > **Note:** Les tests démarrent automatiquement le serveur de développement frontend si celui-ci n'est pas déjà en cours d'exécution. Le backend doit être également démarré pour que tous les tests passent.

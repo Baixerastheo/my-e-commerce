@@ -31,54 +31,67 @@ const formatDate = (date: Date | string) => {
       </div>
 
       <div class="profile-content">
-        <div class="profile-info-group">
-          <div class="info-item">
-            <div class="info-label">
-              <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-              Nom d'utilisateur
+        <div class="profile-main-layout">
+          <div class="profile-info-group">
+            <div class="info-item">
+              <div class="info-label">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Nom d'utilisateur
+              </div>
+              <div class="info-value">{{ authStore.user.username }}</div>
             </div>
-            <div class="info-value">{{ authStore.user.username }}</div>
+
+            <div class="info-item">
+              <div class="info-label">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                Email
+              </div>
+              <div class="info-value">{{ authStore.user.email }}</div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-label">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                  <path d="M2 17l10 5 10-5"></path>
+                  <path d="M2 12l10 5 10-5"></path>
+                </svg>
+                Rôle
+              </div>
+              <div class="info-value">
+                <span class="role-badge" :class="`role-${authStore.user.role.toLowerCase()}`">
+                  {{ authStore.user.role }}
+                </span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="info-label">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                Membre depuis
+              </div>
+              <div class="info-value">{{ formatDate(authStore.user.createdAt) }}</div>
+            </div>
           </div>
 
-          <div class="info-item">
-            <div class="info-label">
-              <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
+          <div class="purchase-info">
+            <h3 class="purchase-title">
+              <svg class="purchase-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
               </svg>
-              Email
-            </div>
-            <div class="info-value">{{ authStore.user.email }}</div>
-          </div>
-
-          <div class="info-item">
-            <div class="info-label">
-              <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                <path d="M2 17l10 5 10-5"></path>
-                <path d="M2 12l10 5 10-5"></path>
-              </svg>
-              Rôle
-            </div>
-            <div class="info-value">
-              <span class="role-badge" :class="`role-${authStore.user.role.toLowerCase()}`">
-                {{ authStore.user.role }}
-              </span>
-            </div>
-          </div>
-
-          <div class="info-item">
-            <div class="info-label">
-              <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              Membre depuis
-            </div>
-            <div class="info-value">{{ formatDate(authStore.user.createdAt) }}</div>
+              Historique des commandes
+            </h3>
           </div>
         </div>
 
