@@ -25,7 +25,6 @@ export class PurchaseService {
     }
 
     // return the five latest purchases by userId
-    // this function is 
     async findFivePurchaseByUser(userId: number): Promise<Purchase[]> {
         const findFivePurchase = await this.prisma.purchase.findMany({
             where: { userId: userId },
