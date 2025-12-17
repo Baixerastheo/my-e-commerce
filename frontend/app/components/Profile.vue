@@ -5,7 +5,7 @@ import { usePurchase } from '../composables/usePurchase';
 import '../../assets/css/profile.css';
 
 const authStore = useAuthStore();
-const { purchases, loading, error, loadPurchase } = usePurchase();
+const { purchases, groupedOrders, loading, error, loadPurchase } = usePurchase();
 
 const handleLogout = async () => {
   await authStore.logout();
@@ -40,7 +40,6 @@ const formatPrice = (price: string | number) => {
   }).format(numPrice);
 };
 
-// Charger les commandes quand l'utilisateur est disponible
 watch(
   () => authStore.user?.id,
   (userId) => {
@@ -140,44 +139,60 @@ watch(
                 <p>{{ error }}</p>
               </div>
               
-              <div v-else-if="purchases.length === 0" class="purchase-empty">
+              <div v-else-if="groupedOrders.length === 0" class="purchase-empty">
                 <p>Aucune commande pour le moment</p>
               </div>
               
               <div v-else class="purchase-list">
                 <div 
-                  v-for="purchase in purchases" 
-                  :key="purchase.id" 
+                  v-for="order in groupedOrders" 
+                  :key="order.orderId || `order-${order.purchases[0]?.id || 'unknown'}`" 
                   class="purchase-item"
                 >
                   <div class="purchase-item-header">
-                    <span class="purchase-id">Commande #{{ purchase.id }}</span>
-                    <span class="purchase-date">{{ formatDateTime(purchase.createdAt) }}</span>
+                    <span class="purchase-id">
+                      {{ `Commande #${order.purchases[0]?.id || 'N/A'}` }}
+                    </span>
+                    <span class="purchase-date">{{ formatDateTime(order.createdAt) }}</span>
                   </div>
                   <div class="purchase-item-details">
-                    <div class="purchase-product-info" v-if="purchase.product">
-                      <img 
-                        v-if="purchase.product.image" 
-                        :src="purchase.product.image" 
-                        :alt="purchase.product.name"
-                        class="purchase-product-image"
-                      />
-                      <div class="purchase-product-text">
-                        <h4 class="purchase-product-name">{{ purchase.product.name }}</h4>
-                        <span class="purchase-product-category">{{ purchase.product.category }}</span>
+                    <div 
+                      v-for="purchase in order.purchases" 
+                      :key="purchase.id"
+                      class="purchase-product-group"
+                    >
+                      <div class="purchase-product-info" v-if="purchase.product">
+                        <img 
+                          v-if="purchase.product.image" 
+                          :src="purchase.product.image" 
+                          :alt="purchase.product.name"
+                          class="purchase-product-image"
+                        />
+                        <div class="purchase-product-text">
+                          <h4 class="purchase-product-name">{{ purchase.product.name }}</h4>
+                          <span class="purchase-product-category">{{ purchase.product.category }}</span>
+                        </div>
+                      </div>
+                      <div v-else class="purchase-detail-row">
+                        <span class="purchase-label">Produit ID:</span>
+                        <span class="purchase-value">{{ purchase.productId }}</span>
+                      </div>
+                      <div class="purchase-detail-row">
+                        <span class="purchase-label">Quantité:</span>
+                        <span class="purchase-value">{{ purchase.quantity }}</span>
+                      </div>
+                      <div class="purchase-detail-row">
+                        <span class="purchase-label">Prix unitaire:</span>
+                        <span class="purchase-value">{{ formatPrice(parseFloat(purchase.total.toString()) / purchase.quantity) }}</span>
+                      </div>
+                      <div class="purchase-detail-row">
+                        <span class="purchase-label">Sous-total:</span>
+                        <span class="purchase-value">{{ formatPrice(purchase.total) }}</span>
                       </div>
                     </div>
-                    <div v-else class="purchase-detail-row">
-                      <span class="purchase-label">Produit ID:</span>
-                      <span class="purchase-value">{{ purchase.productId }}</span>
-                    </div>
-                    <div class="purchase-detail-row">
-                      <span class="purchase-label">Quantité:</span>
-                      <span class="purchase-value">{{ purchase.quantity }}</span>
-                    </div>
-                    <div class="purchase-detail-row purchase-total">
-                      <span class="purchase-label">Total:</span>
-                      <span class="purchase-value">{{ formatPrice(purchase.total) }}</span>
+                    <div class="purchase-detail-row purchase-total order-total">
+                      <span class="purchase-label">Total de la commande:</span>
+                      <span class="purchase-value">{{ formatPrice(order.total) }}</span>
                     </div>
                   </div>
                 </div>

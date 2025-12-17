@@ -300,6 +300,18 @@
   font-weight: 600;
 }
 
+.purchase-product-group {
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.purchase-product-group:last-of-type {
+  margin-bottom: 0;
+}
+
 .purchase-detail-row.purchase-total {
   margin-top: 8px;
   padding-top: 8px;
@@ -314,6 +326,27 @@
 
 .purchase-detail-row.purchase-total .purchase-value {
   font-size: 16px;
+  color: #6366f1;
+}
+
+.purchase-detail-row.order-total {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid #6366f1;
+  background-color: #f0f0ff;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.purchase-detail-row.order-total .purchase-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1d1d1f;
+}
+
+.purchase-detail-row.order-total .purchase-value {
+  font-size: 18px;
+  font-weight: 700;
   color: #6366f1;
 }
 

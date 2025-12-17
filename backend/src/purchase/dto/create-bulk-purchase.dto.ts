@@ -3,21 +3,14 @@ import {
   IsInt,
   Min,
   IsPositive,
-  IsOptional,
-  IsString,
+  IsArray,
+  ValidateNested,
+  IsNotEmpty,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
-export class CreatePurchaseDto {
-  @ApiProperty({
-    description: 'ID de l\'utilisateur qui effectue l\'achat',
-    example: 1,
-    minimum: 1,
-  })
-  @IsInt()
-  @IsPositive()
-  userId: number;
-
+export class PurchaseItemDto {
   @ApiProperty({
     description: 'ID du produit acheté',
     example: 5,
@@ -38,21 +31,32 @@ export class CreatePurchaseDto {
   quantity: number;
 
   @ApiProperty({
-    description: 'Montant total de l\'achat en euros',
+    description: 'Montant total pour ce produit en euros',
     example: 2400.00,
     minimum: 0,
   })
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   total: number;
-
-  @ApiProperty({
-    description: 'ID de commande pour regrouper plusieurs achats',
-    example: 'ORD-2024-001',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  orderId?: string;
 }
 
+export class CreateBulkPurchaseDto {
+  @ApiProperty({
+    description: 'ID de l\'utilisateur qui effectue l\'achat',
+    example: 1,
+    minimum: 1,
+  })
+  @IsInt()
+  @IsPositive()
+  userId: number;
+
+  @ApiProperty({
+    description: 'Liste des produits à acheter',
+    type: [PurchaseItemDto],
+  })
+  @IsArray()
+  @IsNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => PurchaseItemDto)
+  items: PurchaseItemDto[];
+}

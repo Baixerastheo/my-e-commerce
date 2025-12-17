@@ -2,7 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Purchase } from '@prisma/client';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
-import { UpdatePurchaseDto } from './dto/update-purchase.dto'; 
+import { UpdatePurchaseDto } from './dto/update-purchase.dto';
+import { CreateBulkPurchaseDto } from './dto/create-bulk-purchase.dto'; 
 
 @Injectable()
 export class PurchaseService {
@@ -61,6 +62,26 @@ export class PurchaseService {
         });
     }
 
+    async createBulk(createBulkPurchaseDto: CreateBulkPurchaseDto): Promise<Purchase[]> {
+        const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        
+        const purchases = await this.prisma.$transaction(
+            createBulkPurchaseDto.items.map(item =>
+                this.prisma.purchase.create({
+                    data: {
+                        userId: createBulkPurchaseDto.userId,
+                        productId: item.productId,
+                        quantity: item.quantity,
+                        total: item.total,
+                        orderId: orderId,
+                    },
+                })
+            )
+        );
+
+        return purchases;
+    }
+
     async update(id: number, UpdatePurchaseDto: UpdatePurchaseDto): Promise<Purchase> {
         await this.findOne(id);
         return this.prisma.purchase.update({
@@ -70,6 +91,7 @@ export class PurchaseService {
                 productId: UpdatePurchaseDto.productId,
                 quantity: UpdatePurchaseDto.quantity,
                 total: UpdatePurchaseDto.total,
+                orderId: UpdatePurchaseDto.orderId,
             },
         });
     }

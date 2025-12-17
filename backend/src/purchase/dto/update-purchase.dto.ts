@@ -4,6 +4,7 @@ import {
   IsOptional,
   Min,
   IsPositive,
+  IsString,
 } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -47,5 +48,13 @@ export class UpdatePurchaseDto {
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   total?: number;
+
+  @ApiPropertyOptional({
+    description: 'ID de commande pour regrouper plusieurs achats',
+    example: 'ORD-2024-001',
+  })
+  @IsOptional()
+  @IsString()
+  orderId?: string;
 }
 
