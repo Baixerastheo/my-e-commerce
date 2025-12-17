@@ -8,6 +8,7 @@ import {
   Body,
   ParseIntPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -19,6 +20,9 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../middleware/roles.guard';
+import { Roles } from '../middleware/roles.decorator';
 
 @ApiTags('products')
 @Controller('api/products')
@@ -26,7 +30,9 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Créer un nouveau produit' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Créer un nouveau produit (admin uniquement)' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Le produit a été créé avec succès.',
@@ -66,7 +72,9 @@ export class ProductsController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Mettre à jour un produit' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Mettre à jour un produit (admin uniquement)' })
   @ApiParam({ name: 'id', type: 'number', description: 'ID du produit' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -85,7 +93,9 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Supprimer un produit' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Supprimer un produit (admin uniquement)' })
   @ApiParam({ name: 'id', type: 'number', description: 'ID du produit' })
   @ApiResponse({
     status: HttpStatus.OK,

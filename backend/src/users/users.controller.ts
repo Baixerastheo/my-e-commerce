@@ -8,6 +8,7 @@ import {
   Body,
   ParseIntPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -19,6 +20,9 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../middleware/roles.guard';
+import { Roles } from '../middleware/roles.decorator';
 
 @ApiTags('users')
 @Controller('api/users')
@@ -26,7 +30,9 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Get()
-    @ApiOperation({ summary: 'Récupérer tous les utilisateurs' })
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin')
+    @ApiOperation({ summary: 'Récupérer tous les utilisateurs (admin uniquement)' })
     @ApiResponse({
         status: HttpStatus.OK,
         description: 'Liste de tous les utilisateurs.',
@@ -81,7 +87,9 @@ export class UsersController {
     }
     
     @Post()
-    @ApiOperation({ summary: 'Créer un nouvel utilisateur' })
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin')
+    @ApiOperation({ summary: 'Créer un nouvel utilisateur (admin uniquement)' })
     @ApiResponse({
         status: HttpStatus.CREATED,
         description: 'L\'utilisateur a été créé avec succès.',
@@ -96,7 +104,9 @@ export class UsersController {
     }
 
     @Put(':id')
-    @ApiOperation({ summary: 'Mettre à jour un utilisateur' })
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin')
+    @ApiOperation({ summary: 'Mettre à jour un utilisateur (admin uniquement)' })
     @ApiParam({ name: 'id', type: 'number', description: 'ID de l\'utilisateur' })
     @ApiResponse({
         status: HttpStatus.OK,
@@ -112,7 +122,9 @@ export class UsersController {
     }
 
     @Delete(':id')
-    @ApiOperation({ summary: 'Supprimer un utilisateur' })
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin')
+    @ApiOperation({ summary: 'Supprimer un utilisateur (admin uniquement)' })
     @ApiParam({ name: 'id', type: 'number', description: 'ID de l\'utilisateur' })
     @ApiResponse({
         status: HttpStatus.OK,

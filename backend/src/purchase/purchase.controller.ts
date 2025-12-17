@@ -8,6 +8,7 @@ import {
   Body,
   ParseIntPipe,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -19,6 +20,9 @@ import {
 import { PurchaseService } from './purchase.service';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../middleware/roles.guard';
+import { Roles } from '../middleware/roles.decorator';
 
 @ApiTags('purchases')
 @Controller('api/purchases')
@@ -41,7 +45,9 @@ export class PurchaseController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Récupérer tous les achats' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Récupérer tous les achats (admin uniquement)' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Liste de tous les achats.',
@@ -81,7 +87,9 @@ export class PurchaseController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Mettre à jour un achat' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Mettre à jour un achat (admin uniquement)' })
   @ApiParam({ name: 'id', type: 'number', description: 'ID de l\'achat' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -100,7 +108,9 @@ export class PurchaseController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Supprimer un achat' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Supprimer un achat (admin uniquement)' })
   @ApiParam({ name: 'id', type: 'number', description: 'ID de l\'achat' })
   @ApiResponse({
     status: HttpStatus.OK,
