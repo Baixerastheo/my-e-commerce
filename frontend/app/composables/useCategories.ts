@@ -9,7 +9,6 @@ export const useCategories = () => {
             return []
         }
 
-        // Récupérer les catégories uniques avec le nombre de produits
         const categoryMap = new Map<string, { name: string; count: number; image: string }>()
         
         productStore.products.forEach(product => {
@@ -18,7 +17,7 @@ export const useCategories = () => {
                 categoryMap.set(category, {
                     name: category,
                     count: 0,
-                    image: product.image // Prendre l'image du premier produit de la catégorie
+                    image: product.image 
                 })
             }
             const cat = categoryMap.get(category)!
@@ -35,11 +34,13 @@ export const useCategories = () => {
         await productStore.getProducts()
     }
 
-    const goToCategory = (categoryName: string) => {
+    const goToCategory = async (categoryName: string) => {
         const url = `/products?category=${encodeURIComponent(categoryName)}`
-        navigateTo(url).catch(() => {
+        try {
+            await navigateTo(url)
+        } catch {
             window.location.href = url
-        })
+        }
     }
 
     return {

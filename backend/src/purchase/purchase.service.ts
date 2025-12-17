@@ -24,6 +24,16 @@ export class PurchaseService {
         return purchase;
     }
 
+    async FindPurchaseByCreatedAt(createdAt: Date): Promise<Purchase[]> {
+        const purchase = await this.prisma.purchase.findMany({
+            where: { createdAt },
+        });
+        if (purchase.length === 0) {
+            throw new NotFoundException('Purchase not found')
+        }
+        return purchase;
+    }
+
     // return the five latest purchases by userId
     async findFivePurchaseByUser(userId: number): Promise<Purchase[]> {
         const findFivePurchase = await this.prisma.purchase.findMany({
