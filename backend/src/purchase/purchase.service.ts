@@ -29,13 +29,19 @@ export class PurchaseService {
         const findFivePurchase = await this.prisma.purchase.findMany({
             where: { userId: userId },
             orderBy: { id: 'desc' },
-            take: 5
+            take: 5,
+            include: {
+                product: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        image: true,
+                        category: true
+                    }
+                }
+            }
         });
-
-        if (findFivePurchase.length == 0) {
-            throw new NotFoundException(`the user ${userId} has not yet placed orders`);
-        }
-
         return findFivePurchase;
     }
 

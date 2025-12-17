@@ -1,6 +1,14 @@
 import { ref } from "vue";
 import apiClient from "../services/api.client";
 
+interface ProductInfo {
+  id: number;
+  name: string;
+  price: string | number;
+  image: string;
+  category: string;
+}
+
 interface Purchase {
   id: number;
   userId: number;
@@ -8,6 +16,7 @@ interface Purchase {
   quantity: number;
   total: string;
   createdAt: string;
+  product?: ProductInfo;
 }
 
 export const usePurchase = () => {
@@ -29,10 +38,12 @@ export const usePurchase = () => {
       console.error("Erreur lors du chargement des commandes:", err);
       
       if (err.response?.status === 404) {
+        purchases.value = [];
         error.value = null;
       } else {
         error.value =
           err instanceof Error ? err.message : "Erreur lors du chargement";
+        purchases.value = [];
       }
     } finally {
       loading.value = false;
