@@ -1,6 +1,11 @@
+<script setup lang="ts">
+import SearchProduct from '../features/products/components/SearchProduct.vue'
+import ProductSection from '../features/products/components/ProductSection.vue'
+</script>
+
 <template>
   <div>
-    <searchProduct />
+    <SearchProduct />
     <ProductSection />
   </div>
 </template>

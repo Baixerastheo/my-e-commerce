@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import Header from '../shared/components/Header.vue'
+import Footer from '../shared/components/Footer.vue'
+</script>
+
 <template>
   <div class="layout">
     <Header />
@@ -9,8 +14,6 @@
     <Footer />
   </div>
 </template>
-<script setup lang="ts">
-</script>
 
 <style scoped>
 .layout {

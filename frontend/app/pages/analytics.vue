@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useAuthStore } from '../../stores/useAuthStore';
+import { useAuthStore } from '../features/auth/stores/useAuthStore';
 import { waitForInitialization } from '../services/api.client';
+import AnalyticsDashboard from '../features/analytics/components/AnalyticsDashboard.vue';
 
 const authStore = useAuthStore();
 const isAdmin = computed(() => authStore.user?.role === 'admin');

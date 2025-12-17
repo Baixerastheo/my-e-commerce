@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useAuthStore } from "../../stores/useAuthStore";
+import { useAuthStore } from "../features/auth/stores/useAuthStore";
 
 const API_URL = 'http://localhost:3002';
 

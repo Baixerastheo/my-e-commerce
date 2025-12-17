@@ -1,10 +1,12 @@
-<template>
-  <Profile />
-</template>
+<script setup lang="ts">
+import Profile from '../features/auth/components/Profile.vue'
 
-<script setup>
 definePageMeta({
   middleware: 'auth'
 })
 </script>
+
+<template>
+  <Profile />
+</template>
 

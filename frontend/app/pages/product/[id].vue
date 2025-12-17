@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { useProductDetail } from '../../composables/useProductDetail'
+import { useProductDetail } from '../../features/products/composables/useProductDetail'
 
 const { product, loading, error, quantity, decreaseQuantity, increaseQuantity, addToCart } = useProductDetail()
 </script>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useAuthStore } from '../../stores/useAuthStore';
+import { useAuthStore } from '../features/auth/stores/useAuthStore';
 import { waitForInitialization } from '../services/api.client';
-import HeaderAdmin from '~/components/adminComponents/headerAdmin.vue';
-import FooterAdmin from '~/components/adminComponents/footerAdmin.vue';
+import HeaderAdmin from '../features/admin/components/HeaderAdmin.vue';
+import FooterAdmin from '../features/admin/components/FooterAdmin.vue';
 
 const authStore = useAuthStore();
 const isAdmin = computed(() => authStore.user?.role === 'admin');

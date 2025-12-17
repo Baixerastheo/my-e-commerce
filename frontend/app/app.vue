@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from '../stores/useAuthStore';
+import { useAuthStore } from './features/auth/stores/useAuthStore';
 import { setInitializing, setInitPromise } from './services/api.client';
 
 useHead({

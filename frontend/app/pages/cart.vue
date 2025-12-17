@@ -1,5 +1,9 @@
+<script setup lang="ts">
+import CartList from '../features/cart/components/CartList.vue'
+</script>
+
 <template>
   <div>
-    <cartList />
+    <CartList />
   </div>
 </template>
