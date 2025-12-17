@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { watch } from 'vue';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { usePurchase } from '../composables/usePurchase';
-import { onMounted, watch } from 'vue';
-import '../assets/css/profile.css';
+import '../../assets/css/profile.css';
 
 const authStore = useAuthStore();
 const { purchases, loading, error, loadPurchase } = usePurchase();
@@ -21,6 +21,17 @@ const formatDate = (date: Date | string) => {
   });
 };
 
+const formatDateTime = (date: Date | string) => {
+  const d = new Date(date);
+  return d.toLocaleString('fr-FR', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
 const formatPrice = (price: string | number) => {
   const numPrice = typeof price === 'string' ? parseFloat(price) : price;
   return new Intl.NumberFormat('fr-FR', {
@@ -29,21 +40,16 @@ const formatPrice = (price: string | number) => {
   }).format(numPrice);
 };
 
-const loadUserPurchases = () => {
-  if (authStore.user?.id) {
-    loadPurchase(authStore.user.id);
-  }
-};
-
-onMounted(() => {
-  loadUserPurchases();
-});
-
-watch(() => authStore.user?.id, (newId) => {
-  if (newId) {
-    loadUserPurchases();
-  }
-});
+// Charger les commandes quand l'utilisateur est disponible
+watch(
+  () => authStore.user?.id,
+  (userId) => {
+    if (userId) {
+      loadPurchase(userId);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -62,7 +68,8 @@ watch(() => authStore.user?.id, (newId) => {
           <div class="profile-info-group">
             <div class="info-item">
               <div class="info-label">
-                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
@@ -73,7 +80,8 @@ watch(() => authStore.user?.id, (newId) => {
 
             <div class="info-item">
               <div class="info-label">
-                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
@@ -84,7 +92,8 @@ watch(() => authStore.user?.id, (newId) => {
 
             <div class="info-item">
               <div class="info-label">
-                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
                   <path d="M2 17l10 5 10-5"></path>
                   <path d="M2 12l10 5 10-5"></path>
@@ -100,7 +109,8 @@ watch(() => authStore.user?.id, (newId) => {
 
             <div class="info-item">
               <div class="info-label">
-                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
@@ -112,7 +122,8 @@ watch(() => authStore.user?.id, (newId) => {
 
           <div class="purchase-info">
             <h3 class="purchase-title">
-              <svg class="purchase-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="purchase-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
                 <path d="M16 10a4 4 0 0 1-8 0"></path>
@@ -129,7 +140,11 @@ watch(() => authStore.user?.id, (newId) => {
                 <p>{{ error }}</p>
               </div>
               
-              <div v-else-if="purchases.length > 0" class="purchase-list">
+              <div v-else-if="purchases.length === 0" class="purchase-empty">
+                <p>Aucune commande pour le moment</p>
+              </div>
+              
+              <div v-else class="purchase-list">
                 <div 
                   v-for="purchase in purchases" 
                   :key="purchase.id" 
@@ -137,10 +152,22 @@ watch(() => authStore.user?.id, (newId) => {
                 >
                   <div class="purchase-item-header">
                     <span class="purchase-id">Commande #{{ purchase.id }}</span>
-                    <span class="purchase-date">{{ formatDate(purchase.createdAt) }}</span>
+                    <span class="purchase-date">{{ formatDateTime(purchase.createdAt) }}</span>
                   </div>
                   <div class="purchase-item-details">
-                    <div class="purchase-detail-row">
+                    <div class="purchase-product-info" v-if="purchase.product">
+                      <img 
+                        v-if="purchase.product.image" 
+                        :src="purchase.product.image" 
+                        :alt="purchase.product.name"
+                        class="purchase-product-image"
+                      />
+                      <div class="purchase-product-text">
+                        <h4 class="purchase-product-name">{{ purchase.product.name }}</h4>
+                        <span class="purchase-product-category">{{ purchase.product.category }}</span>
+                      </div>
+                    </div>
+                    <div v-else class="purchase-detail-row">
                       <span class="purchase-label">Produit ID:</span>
                       <span class="purchase-value">{{ purchase.productId }}</span>
                     </div>
@@ -155,18 +182,14 @@ watch(() => authStore.user?.id, (newId) => {
                   </div>
                 </div>
               </div>
-              
-              <!-- Aucune commande -->
-              <div v-else class="purchase-empty">
-                <p>Aucune commande pour le moment</p>
-              </div>
             </div>
           </div>
         </div>
 
         <div class="profile-actions">
           <button @click="handleLogout" class="logout-button">
-            <svg class="logout-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="logout-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
               <polyline points="16 17 21 12 16 7"></polyline>
               <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -178,4 +201,3 @@ watch(() => authStore.user?.id, (newId) => {
     </div>
   </div>
 </template>
-

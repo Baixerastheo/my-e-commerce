@@ -5,7 +5,7 @@ import { useCartList } from '../composables/useCartList'
 
 const cartStore = useCartStore()
 const { decreaseQuantity, increaseQuantity } = useCartQuantity()
-const { handleCheckout } = useCartList()
+const { handleCheckout, isLoading } = useCartList()
 </script>
 
 <template>
@@ -116,8 +116,13 @@ const { handleCheckout } = useCartList()
             <span>{{ cartStore.totalPrice.toFixed(2) }}€</span>
           </div>
           
-          <button class="checkout-btn" type="button" @click="handleCheckout">
-            Passer la commande
+          <button 
+            class="checkout-btn" 
+            type="button" 
+            @click="handleCheckout"
+            :disabled="isLoading"
+          >
+            {{ isLoading ? 'Traitement en cours...' : 'Passer la commande' }}
           </button>
           
           <NuxtLink to="/products" class="continue-shopping">

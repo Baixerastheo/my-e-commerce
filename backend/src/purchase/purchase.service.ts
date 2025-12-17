@@ -24,18 +24,34 @@ export class PurchaseService {
         return purchase;
     }
 
+    async FindPurchaseByCreatedAt(createdAt: Date): Promise<Purchase[]> {
+        const purchase = await this.prisma.purchase.findMany({
+            where: { createdAt },
+        });
+        if (purchase.length === 0) {
+            throw new NotFoundException('Purchase not found')
+        }
+        return purchase;
+    }
+
     // return the five latest purchases by userId
     async findFivePurchaseByUser(userId: number): Promise<Purchase[]> {
         const findFivePurchase = await this.prisma.purchase.findMany({
             where: { userId: userId },
             orderBy: { id: 'desc' },
-            take: 5
+            take: 5,
+            include: {
+                product: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        image: true,
+                        category: true
+                    }
+                }
+            }
         });
-
-        if (findFivePurchase.length == 0) {
-            throw new NotFoundException(`the user ${userId} has not yet placed orders`);
-        }
-
         return findFivePurchase;
     }
 
