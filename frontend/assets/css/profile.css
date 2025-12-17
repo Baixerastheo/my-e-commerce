@@ -144,13 +144,15 @@
   border: 1px solid #e5e7eb;
   height: 450px;
   align-self: flex-start;
+  display: flex;
+  flex-direction: column;
 }
 
 .purchase-title {
   font-size: 18px;
   font-weight: 600;
   color: #1d1d1f;
-  margin: 0;
+  margin: 0 0 20px 0;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -159,6 +161,126 @@
 .purchase-icon {
   width: 24px;
   height: 24px;
+  color: #6366f1;
+}
+
+.purchase-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.purchase-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.purchase-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.purchase-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.purchase-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.purchase-loading,
+.purchase-error,
+.purchase-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6e6e73;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+.purchase-error {
+  color: #dc2626;
+}
+
+.purchase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.purchase-item {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.purchase-item:hover {
+  border-color: #6366f1;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+}
+
+.purchase-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.purchase-id {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6366f1;
+}
+
+.purchase-date {
+  font-size: 12px;
+  color: #6e6e73;
+}
+
+.purchase-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.purchase-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.purchase-label {
+  color: #6e6e73;
+  font-weight: 500;
+}
+
+.purchase-value {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+.purchase-detail-row.purchase-total {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.purchase-detail-row.purchase-total .purchase-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.purchase-detail-row.purchase-total .purchase-value {
+  font-size: 16px;
   color: #6366f1;
 }
 

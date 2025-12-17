@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { useAuthStore } from '../../stores/useAuthStore';
+import { usePurchase } from '../composables/usePurchase';
+import { onMounted, watch } from 'vue';
 import '../assets/css/profile.css';
 
 const authStore = useAuthStore();
+const { purchases, loading, error, loadPurchase } = usePurchase();
 
 const handleLogout = async () => {
   await authStore.logout();
@@ -17,6 +20,30 @@ const formatDate = (date: Date | string) => {
     day: 'numeric'
   });
 };
+
+const formatPrice = (price: string | number) => {
+  const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+  return new Intl.NumberFormat('fr-FR', {
+    style: 'currency',
+    currency: 'EUR'
+  }).format(numPrice);
+};
+
+const loadUserPurchases = () => {
+  if (authStore.user?.id) {
+    loadPurchase(authStore.user.id);
+  }
+};
+
+onMounted(() => {
+  loadUserPurchases();
+});
+
+watch(() => authStore.user?.id, (newId) => {
+  if (newId) {
+    loadUserPurchases();
+  }
+});
 </script>
 
 <template>
@@ -92,6 +119,48 @@ const formatDate = (date: Date | string) => {
               </svg>
               Historique des commandes
             </h3>
+            
+            <div class="purchase-content">
+              <div v-if="loading" class="purchase-loading">
+                <p>Chargement de vos commandes...</p>
+              </div>
+              
+              <div v-else-if="error" class="purchase-error">
+                <p>{{ error }}</p>
+              </div>
+              
+              <div v-else-if="purchases.length > 0" class="purchase-list">
+                <div 
+                  v-for="purchase in purchases" 
+                  :key="purchase.id" 
+                  class="purchase-item"
+                >
+                  <div class="purchase-item-header">
+                    <span class="purchase-id">Commande #{{ purchase.id }}</span>
+                    <span class="purchase-date">{{ formatDate(purchase.createdAt) }}</span>
+                  </div>
+                  <div class="purchase-item-details">
+                    <div class="purchase-detail-row">
+                      <span class="purchase-label">Produit ID:</span>
+                      <span class="purchase-value">{{ purchase.productId }}</span>
+                    </div>
+                    <div class="purchase-detail-row">
+                      <span class="purchase-label">Quantité:</span>
+                      <span class="purchase-value">{{ purchase.quantity }}</span>
+                    </div>
+                    <div class="purchase-detail-row purchase-total">
+                      <span class="purchase-label">Total:</span>
+                      <span class="purchase-value">{{ formatPrice(purchase.total) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Aucune commande -->
+              <div v-else class="purchase-empty">
+                <p>Aucune commande pour le moment</p>
+              </div>
+            </div>
           </div>
         </div>
 
