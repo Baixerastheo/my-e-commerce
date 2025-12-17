@@ -20,9 +20,13 @@ import {
 import { PurchaseService } from './purchase.service';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
+<<<<<<< HEAD
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../middleware/roles.guard';
 import { Roles } from '../middleware/roles.decorator';
+=======
+import { CreateBulkPurchaseDto } from './dto/create-bulk-purchase.dto';
+>>>>>>> 5c97caf9a83568d165e63813e2ee1b40262cac50
 
 @ApiTags('purchases')
 @Controller('api/purchases')
@@ -42,6 +46,21 @@ export class PurchaseController {
   @ApiBody({ type: CreatePurchaseDto })
   create(@Body() createPurchaseDto: CreatePurchaseDto) {
     return this.purchaseService.create(createPurchaseDto);
+  }
+
+  @Post('bulk')
+  @ApiOperation({ summary: 'Créer plusieurs achats groupés dans une seule commande' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Les achats ont été créés avec succès.',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Données invalides.',
+  })
+  @ApiBody({ type: CreateBulkPurchaseDto })
+  createBulk(@Body() createBulkPurchaseDto: CreateBulkPurchaseDto) {
+    return this.purchaseService.createBulk(createBulkPurchaseDto);
   }
 
   @Get()

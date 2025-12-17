@@ -44,40 +44,45 @@ describe('PurchaseService', () => {
           productId: 1,
           quantity: 2,
           total: new Prisma.Decimal(199.98),
+          orderId: null,
           createdAt: new Date('2024-01-05'),
-        },
+        } as Purchase,
         {
           id: 4,
           userId: 1,
           productId: 2,
           quantity: 1,
           total: new Prisma.Decimal(99.99),
+          orderId: null,
           createdAt: new Date('2024-01-04'),
-        },
+        } as Purchase,
         {
           id: 3,
           userId: 1,
           productId: 3,
           quantity: 3,
           total: new Prisma.Decimal(299.97),
+          orderId: null,
           createdAt: new Date('2024-01-03'),
-        },
+        } as Purchase,
         {
           id: 2,
           userId: 1,
           productId: 1,
           quantity: 1,
           total: new Prisma.Decimal(99.99),
+          orderId: null,
           createdAt: new Date('2024-01-02'),
-        },
+        } as Purchase,
         {
           id: 1,
           userId: 1,
           productId: 2,
           quantity: 2,
           total: new Prisma.Decimal(199.98),
+          orderId: null,
           createdAt: new Date('2024-01-01'),
-        },
+        } as Purchase,
       ];
 
       mockPrismaService.purchase.findMany.mockResolvedValue(mockPurchases);
@@ -102,16 +107,18 @@ describe('PurchaseService', () => {
           productId: 1,
           quantity: 1,
           total: new Prisma.Decimal(99.99),
+          orderId: null,
           createdAt: new Date('2024-01-02'),
-        },
+        } as Purchase,
         {
           id: 1,
           userId: 1,
           productId: 2,
           quantity: 2,
           total: new Prisma.Decimal(199.98),
+          orderId: null,
           createdAt: new Date('2024-01-01'),
-        },
+        } as Purchase,
       ];
 
       mockPrismaService.purchase.findMany.mockResolvedValue(mockPurchases);
@@ -151,8 +158,9 @@ describe('PurchaseService', () => {
           productId: 1,
           quantity: 1,
           total: new Prisma.Decimal(99.99),
+          orderId: null,
           createdAt: new Date('2024-01-01'),
-        },
+        } as Purchase,
       ];
 
       mockPrismaService.purchase.findMany.mockResolvedValue(mockPurchases);

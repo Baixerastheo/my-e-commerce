@@ -31,17 +31,16 @@ export const useCartList = () => {
         price: item.price
       }))
 
-      const purchasePromises = cartStore.cart.map(item => {
-        const total = item.price * item.quantity
-        return apiClient.post('/api/purchases', {
-          userId: authStore.user!.id,
-          productId: item.id,
-          quantity: item.quantity,
-          total: total
-        })
-      })
+      const purchaseItems = cartStore.cart.map(item => ({
+        productId: item.id,
+        quantity: item.quantity,
+        total: item.price * item.quantity
+      }))
 
-      await Promise.all(purchasePromises)
+      await apiClient.post('/api/purchases/bulk', {
+        userId: authStore.user!.id,
+        items: purchaseItems
+      })
 
       trackPurchase(cartStore.totalPrice, items)
 
