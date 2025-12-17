@@ -1,12 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Purchase } from '@prisma/client';
+import { Purchase, Prisma } from '@prisma/client';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
-<<<<<<< HEAD
-=======
 import { CreateBulkPurchaseDto } from './dto/create-bulk-purchase.dto'; 
->>>>>>> 5c97caf9a83568d165e63813e2ee1b40262cac50
 
 @Injectable()
 export class PurchaseService {
@@ -77,7 +74,7 @@ export class PurchaseService {
                         quantity: item.quantity,
                         total: item.total,
                         orderId: orderId,
-                    },
+                    } as Prisma.PurchaseUncheckedCreateInput,
                 })
             )
         );
@@ -95,7 +92,7 @@ export class PurchaseService {
                 quantity: UpdatePurchaseDto.quantity,
                 total: UpdatePurchaseDto.total,
                 orderId: UpdatePurchaseDto.orderId,
-            },
+            } as Prisma.PurchaseUncheckedUpdateInput,
         });
     }
 
