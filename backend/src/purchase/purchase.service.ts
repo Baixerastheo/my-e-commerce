@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Purchase, Prisma } from '@prisma/client';
+import { Prisma, Purchase } from '@prisma/client';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
 import { CreateBulkPurchaseDto } from './dto/create-bulk-purchase.dto'; 
@@ -64,9 +64,9 @@ export class PurchaseService {
 
     async createBulk(createBulkPurchaseDto: CreateBulkPurchaseDto): Promise<Purchase[]> {
         const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        
+
         const purchases = await this.prisma.$transaction(
-            createBulkPurchaseDto.items.map(item =>
+            createBulkPurchaseDto.items.map((item) =>
                 this.prisma.purchase.create({
                     data: {
                         userId: createBulkPurchaseDto.userId,
@@ -75,8 +75,8 @@ export class PurchaseService {
                         total: item.total,
                         orderId: orderId,
                     } as Prisma.PurchaseUncheckedCreateInput,
-                })
-            )
+                }),
+            ),
         );
 
         return purchases;

@@ -9,7 +9,7 @@ import { uid } from 'uid';
 
 @Injectable()
 export class AnalyticsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async trackEvent(
     createEventDto: CreateAnalyticsEventDto,
@@ -171,7 +171,7 @@ export class AnalyticsService {
 
   async getTopProductViews(limit: number = 10) {
     const events = await this.prisma.analyticsEvent.findMany();
-    
+
     const countBy = <T>(
       items: T[],
       keyFn: (item: T) => string | number,
