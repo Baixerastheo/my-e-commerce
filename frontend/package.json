@@ -28,5 +28,10 @@
     "@playwright/test": "^1.56.1",
     "@types/cors": "^2.8.19",
     "@types/node": "^24.10.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "parse-url": "10.0.3"
+    }
   }
 }

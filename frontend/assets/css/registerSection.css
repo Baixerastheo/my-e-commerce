@@ -165,6 +165,14 @@
   text-align: center;
 }
 
+.field-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #dc2626;
+  font-weight: 400;
+}
+
 .checkbox-label {
   display: flex;
   align-items: center;

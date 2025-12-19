@@ -2,12 +2,11 @@
 import { ref } from 'vue'
 import '../../../../assets/css/registerSection.css'
 import { useAuthStore } from '../stores/useAuthStore';
+import { Field, Form, ErrorMessage } from 'vee-validate';
+import * as yup from 'yup';
 
 const emit = defineEmits(['switch-to-login'])
 
-const username = ref('')
-const email = ref('')
-const password = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
 const errorMessage = ref<string | null>(null)
@@ -17,11 +16,11 @@ const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
-const handleRegister = async () => {
+const handleRegister = async (username: string, email: string, password: string) => {
   try {
     loading.value = true;
     errorMessage.value = null;
-    await authStore.register(username.value, email.value, password.value);
+    await authStore.register(username, email, password);
     navigateTo('/')
   } catch (error: any) {
     console.error('Register failed:', error);
@@ -29,6 +28,16 @@ const handleRegister = async () => {
   } finally {
     loading.value = false;
   }
+}
+
+const schema = yup.object({
+  username: yup.string().min(3, 'Le nom d\'utilisateur doit contenir au moins 3 caractères').required('Le nom d\'utilisateur est requis'),
+  email: yup.string().email('Veuillez entrer un email valide').required('L\'email est requis'),
+  password: yup.string().min(8, 'Le mot de passe doit contenir au moins 8 caractères').required('Le mot de passe est requis'),
+});
+
+function onSubmit(values: any) {
+  handleRegister(values.username, values.email, values.password);
 }
 </script>
 
@@ -43,7 +52,7 @@ const handleRegister = async () => {
         <p class="login-subtitle">Créez votre compte</p>
       </div>
 
-      <form @submit.prevent="handleRegister" class="login-form">
+      <Form :validation-schema="schema" @submit="onSubmit" class="login-form">
         <div class="form-group">
           <label for="username" class="form-label">Nom d'utilisateur</label>
           <div class="input-wrapper">
@@ -51,18 +60,17 @@ const handleRegister = async () => {
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            <input
+            <Field
               id="username"
-              v-model="username"
+              name="username"
               type="text"
               class="form-input"
               placeholder="votre_nom_utilisateur"
-              required
-              minlength="3"
               maxlength="100"
             />
             <div class="input-indicator"></div>
           </div>
+          <ErrorMessage name="username" class="field-error" />
         </div>
 
         <div class="form-group">
@@ -72,16 +80,16 @@ const handleRegister = async () => {
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
               <polyline points="22,6 12,13 2,6"></polyline>
             </svg>
-            <input
+            <Field
               id="email"
-              v-model="email"
+              name="email"
               type="email"
               class="form-input"
               placeholder="votre@email.com"
-              required
             />
             <div class="input-indicator"></div>
           </div>
+          <ErrorMessage name="email" class="field-error" />
         </div>
 
         <div class="form-group">
@@ -91,14 +99,12 @@ const handleRegister = async () => {
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
-            <input
+            <Field
               id="password"
-              v-model="password"
+              name="password"
               :type="showPassword ? 'text' : 'password'"
               class="form-input"
               placeholder="••••••••"
-              required
-              minlength="8"
             />
             <div class="input-indicator"></div>
             <button
@@ -117,6 +123,7 @@ const handleRegister = async () => {
               </svg>
             </button>
           </div>
+          <ErrorMessage name="password" class="field-error" />
         </div>
 
         <div v-if="errorMessage" class="error-message">
@@ -126,7 +133,7 @@ const handleRegister = async () => {
         <button type="submit" class="login-button" :disabled="loading">
           {{ loading ? 'Inscription...' : 'S\'inscrire' }}
         </button>
-      </form>
+      </Form>
 
       <div class="signup-section">
         <p class="signup-text">
