@@ -9,6 +9,8 @@ import {
   ParseIntPipe,
   HttpStatus,
   UseGuards,
+  NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -52,8 +54,12 @@ export class UsersController {
         status: HttpStatus.NOT_FOUND,
         description: 'Utilisateur non trouvé.',
     })
-    findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.usersService.findOne(id);
+    async findOne(@Param('id', ParseIntPipe) id: number) {
+        const result = await this.usersService.findOne(id);
+        if (result.isErr()) {
+            throw new NotFoundException(result.unwrapErr());
+        }
+        return result.unwrap();
     }
 
     @Get(':username')
@@ -98,9 +104,17 @@ export class UsersController {
         status: HttpStatus.BAD_REQUEST,
         description: 'Données invalides.',
     })
+    @ApiResponse({
+        status: HttpStatus.CONFLICT,
+        description: 'Contrainte unique violée.',
+    })
     @ApiBody({ type: CreateUserDto })
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.usersService.create(createUserDto);
+    async create(@Body() createUserDto: CreateUserDto) {
+        const result = await this.usersService.create(createUserDto);
+        if (result.isErr()) {
+            throw new ConflictException(result.unwrapErr());
+        }
+        return result.unwrap();
     }
 
     @Put(':id')
@@ -116,9 +130,21 @@ export class UsersController {
         status: HttpStatus.NOT_FOUND,
         description: 'Utilisateur non trouvé.',
     })
+    @ApiResponse({
+        status: HttpStatus.CONFLICT,
+        description: 'Contrainte unique violée.',
+    })
     @ApiBody({ type: UpdateUserDto })
-    update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-        return this.usersService.update(id, updateUserDto);
+    async update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+        const result = await this.usersService.update(id, updateUserDto);
+        if (result.isErr()) {
+            const error = result.unwrapErr();
+            if (error.includes('not found')) {
+                throw new NotFoundException(error);
+            }
+            throw new ConflictException(error);
+        }
+        return result.unwrap();
     }
 
     @Delete(':id')
@@ -134,7 +160,11 @@ export class UsersController {
         status: HttpStatus.NOT_FOUND,
         description: 'Utilisateur non trouvé.',
     })
-    remove(@Param('id', ParseIntPipe) id: number) {
-        return this.usersService.remove(id);
+    async remove(@Param('id', ParseIntPipe) id: number) {
+        const result = await this.usersService.remove(id);
+        if (result.isErr()) {
+            throw new NotFoundException(result.unwrapErr());
+        }
+        return result.unwrap();
     }
 }

@@ -9,6 +9,8 @@ import {
   ParseIntPipe,
   HttpStatus,
   UseGuards,
+  NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -40,9 +42,17 @@ export class PurchaseController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Données invalides.',
   })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Contrainte unique violée.',
+  })
   @ApiBody({ type: CreatePurchaseDto })
-  create(@Body() createPurchaseDto: CreatePurchaseDto) {
-    return this.purchaseService.create(createPurchaseDto);
+  async create(@Body() createPurchaseDto: CreatePurchaseDto) {
+    const result = await this.purchaseService.create(createPurchaseDto);
+    if (result.isErr()) {
+      throw new ConflictException(result.unwrapErr());
+    }
+    return result.unwrap();
   }
 
   @Post('bulk')
@@ -83,8 +93,12 @@ export class PurchaseController {
     status: HttpStatus.NOT_FOUND,
     description: 'Achat non trouvé.',
   })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.purchaseService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const result = await this.purchaseService.findOne(id);
+    if (result.isErr()) {
+      throw new NotFoundException(result.unwrapErr());
+    }
+    return result.unwrap();
   }
 
   @Get('user/:userId')
@@ -115,12 +129,24 @@ export class PurchaseController {
     status: HttpStatus.NOT_FOUND,
     description: 'Achat non trouvé.',
   })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Contrainte unique violée.',
+  })
   @ApiBody({ type: UpdatePurchaseDto })
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePurchaseDto: UpdatePurchaseDto,
   ) {
-    return this.purchaseService.update(id, updatePurchaseDto);
+    const result = await this.purchaseService.update(id, updatePurchaseDto);
+    if (result.isErr()) {
+      const error = result.unwrapErr();
+      if (error.includes('not found')) {
+        throw new NotFoundException(error);
+      }
+      throw new ConflictException(error);
+    }
+    return result.unwrap();
   }
 
   @Delete(':id')
@@ -136,7 +162,11 @@ export class PurchaseController {
     status: HttpStatus.NOT_FOUND,
     description: 'Achat non trouvé.',
   })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.purchaseService.remove(id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const result = await this.purchaseService.remove(id);
+    if (result.isErr()) {
+      throw new NotFoundException(result.unwrapErr());
+    }
+    return result.unwrap();
   }
 }

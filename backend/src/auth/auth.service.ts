@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -10,7 +10,7 @@ import { RegisterDto } from './dto/register.dto';
 export class AuthService {
     constructor(private usersService: UsersService, private jwtService: JwtService) { }
 
-    async validateUser(identifier: string, password: string): Promise<any> {
+    async validateUser(identifier: string, password: string): Promise<Result<Omit<User, 'password'>, string>> {
         const emailResult = await this.findUserByEmail(identifier);
         
         const userResult = emailResult.isOk() 
@@ -18,7 +18,7 @@ export class AuthService {
             : await this.findUserByUsername(identifier);
 
         if (userResult.isErr()) {
-            throw new NotFoundException(`User with identifier ${identifier} not found`);
+            return Err(`User with identifier ${identifier} not found`);
         }
 
         const user = userResult.unwrap();
@@ -30,7 +30,7 @@ export class AuthService {
                 const { password: _, ...result } = user;
                 return result;
             })
-            .unwrapOr(null);
+            .mapErr(() => 'Invalid password');
     }
 
     private async findUserByEmail(identifier: string): Promise<Result<User, string>> {
@@ -57,28 +57,39 @@ export class AuthService {
         return this.jwtService.sign(payload);
     }
 
-    async register(registerDto: RegisterDto): Promise<string> {
+    async register(registerDto: RegisterDto): Promise<Result<string, string>> {
         const existingEmail = await this.usersService.findOneByEmail(registerDto.email);
         if (existingEmail) {
-            throw new ConflictException(`Email ${registerDto.email} is already registered`);
+            return Err(`Email ${registerDto.email} is already registered`);
         }
 
         const existingUsername = await this.usersService.findOneByUsername(registerDto.username);
         if (existingUsername) {
-            throw new ConflictException(`Username ${registerDto.username} is already taken`);
+            return Err(`Username ${registerDto.username} is already taken`);
         }
 
-        const user = await this.usersService.create({
+        const createResult = await this.usersService.create({
             username: registerDto.username,
             email: registerDto.email,
             password: await bcrypt.hash(registerDto.password, 10),
         });
-        return this.login(user);
+        
+        if (createResult.isErr()) {
+            return createResult;
+        }
+        
+        const user = createResult.unwrap();
+        const token = await this.login(user);
+        return Ok(token);
     }
 
-    async profile(user: { id: number }): Promise<Omit<User, 'password'>> {
-        const fullUser = await this.usersService.findOne(user.id);
+    async profile(user: { id: number }): Promise<Result<Omit<User, 'password'>, string>> {
+        const findResult = await this.usersService.findOne(user.id);
+        if (findResult.isErr()) {
+            return findResult;
+        }
+        const fullUser = findResult.unwrap();
         const { password: _, ...userWithoutPassword } = fullUser;
-        return userWithoutPassword;
+        return Ok(userWithoutPassword);
     }
 }

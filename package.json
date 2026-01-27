@@ -1,4 +1,16 @@
 {
+  "name": "my-ecommerce",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"cd backend && pnpm dev\" \"cd frontend && pnpm dev\"",
+    "start": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"cd backend && pnpm start\" \"cd frontend && pnpm dev\"",
+    "build": "pnpm --dir backend build && pnpm --dir frontend build",
+    "install:all": "pnpm install && pnpm --dir backend install && pnpm --dir frontend install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
   "dependencies": {
     "passport-jwt": "^4.0.1"
   }

@@ -1,55 +1,43 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { BaseCrudService } from '../common/services/base-crud.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from '@prisma/client';
+import { Result, Ok, Err } from 'oxide.ts';
 
 @Injectable()
-export class ProductsService {
-  constructor(private prisma: PrismaService) {}
+export class ProductsService extends BaseCrudService<
+  Product,
+  CreateProductDto,
+  UpdateProductDto
+> {
+  protected readonly modelName = 'product';
+  protected readonly modelDisplayName = 'Product';
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
-    return this.prisma.product.create({
-      data: {
-        ...createProductDto,
-        specs: createProductDto.specs || [],
-      },
-    });
+  constructor(prisma: PrismaService) {
+    super(prisma);
   }
 
-  async findAll(): Promise<Product[]> {
-    return this.prisma.product.findMany({
-      orderBy: { id: 'asc' },
-    });
+  protected getModelDelegate() {
+    return this.prisma.product;
   }
 
-  async findOne(id: number): Promise<Product> {
-    const product = await this.prisma.product.findUnique({
-      where: { id },
-    });
-
-    if (!product) {
-      throw new NotFoundException(`Product with ID ${id} not found`);
+  async create(createProductDto: CreateProductDto): Promise<Result<Product, string>> {
+    try {
+      const entity = await this.getModelDelegate().create({
+        data: {
+          ...createProductDto,
+          specs: createProductDto.specs || [],
+        },
+      });
+      return Ok(entity);
+    } catch (error: any) {
+      if (error.code === 'P2002') {
+        return Err(`Unique constraint violation: ${error.meta?.target?.join(', ') || 'field'}`);
+      }
+      throw error;
     }
-
-    return product;
-  }
-
-  async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
-    await this.findOne(id);
-
-    return this.prisma.product.update({
-      where: { id },
-      data: updateProductDto,
-    });
-  }
-
-  async remove(id: number): Promise<Product> {
-    await this.findOne(id);
-
-    return this.prisma.product.delete({
-      where: { id },
-    });
   }
 }
 

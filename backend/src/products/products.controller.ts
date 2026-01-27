@@ -9,6 +9,8 @@ import {
   ParseIntPipe,
   HttpStatus,
   UseGuards,
+  NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -41,9 +43,17 @@ export class ProductsController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Données invalides.',
   })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Contrainte unique violée.',
+  })
   @ApiBody({ type: CreateProductDto })
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  async create(@Body() createProductDto: CreateProductDto) {
+    const result = await this.productsService.create(createProductDto);
+    if (result.isErr()) {
+      throw new ConflictException(result.unwrapErr());
+    }
+    return result.unwrap();
   }
 
   @Get()
@@ -67,8 +77,12 @@ export class ProductsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Produit non trouvé.',
   })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.productsService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const result = await this.productsService.findOne(id);
+    if (result.isErr()) {
+      throw new NotFoundException(result.unwrapErr());
+    }
+    return result.unwrap();
   }
 
   @Put(':id')
@@ -84,12 +98,24 @@ export class ProductsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Produit non trouvé.',
   })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Contrainte unique violée.',
+  })
   @ApiBody({ type: UpdateProductDto })
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productsService.update(id, updateProductDto);
+    const result = await this.productsService.update(id, updateProductDto);
+    if (result.isErr()) {
+      const error = result.unwrapErr();
+      if (error.includes('not found')) {
+        throw new NotFoundException(error);
+      }
+      throw new ConflictException(error);
+    }
+    return result.unwrap();
   }
 
   @Delete(':id')
@@ -105,8 +131,12 @@ export class ProductsController {
     status: HttpStatus.NOT_FOUND,
     description: 'Produit non trouvé.',
   })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.productsService.remove(id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const result = await this.productsService.remove(id);
+    if (result.isErr()) {
+      throw new NotFoundException(result.unwrapErr());
+    }
+    return result.unwrap();
   }
 }
 

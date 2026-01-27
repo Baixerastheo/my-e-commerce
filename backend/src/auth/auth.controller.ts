@@ -11,6 +11,8 @@ import {
     UseGuards,
     Request,
     Response,
+    ConflictException,
+    NotFoundException,
   } from '@nestjs/common';
 import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { AuthService } from './auth.service';
@@ -58,8 +60,13 @@ export class AuthController {
   @ApiResponse({ status: 409, description: 'Email or username already exists' })
   @ApiBody({ type: RegisterDto })
   async register(@Body() registerDto: RegisterDto, @Response({ passthrough: true }) res: ExpressResponse) {
-    const token = await this.authService.register(registerDto);
+    const result = await this.authService.register(registerDto);
     
+    if (result.isErr()) {
+      throw new ConflictException(result.unwrapErr());
+    }
+    
+    const token = result.unwrap();
     res.cookie('auth_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -80,7 +87,11 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Profile not found'})
   async profile(@Request() req: AuthenticatedRequest) {
-    return await this.authService.profile(req.user);
+    const result = await this.authService.profile(req.user);
+    if (result.isErr()) {
+      throw new NotFoundException(result.unwrapErr());
+    }
+    return result.unwrap();
   }
 
   @Post('logout')

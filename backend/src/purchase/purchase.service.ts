@@ -1,65 +1,52 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { BaseCrudService } from '../common/services/base-crud.service';
 import { Prisma, Purchase } from '@prisma/client';
+import { Result, Ok, Err } from 'oxide.ts';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
-import { CreateBulkPurchaseDto } from './dto/create-bulk-purchase.dto'; 
+import { CreateBulkPurchaseDto } from './dto/create-bulk-purchase.dto';
 
 @Injectable()
-export class PurchaseService {
-    constructor(private prisma: PrismaService) { }
+export class PurchaseService extends BaseCrudService<
+    Purchase,
+    CreatePurchaseDto,
+    UpdatePurchaseDto
+> {
+    protected readonly modelName = 'purchase';
+    protected readonly modelDisplayName = 'Purchase';
 
-    async findAll(): Promise<Purchase[]> {
-        return this.prisma.purchase.findMany({
-            orderBy: { id: 'asc' },
-        });
+    constructor(prisma: PrismaService) {
+        super(prisma);
     }
 
-    async findOne(id: number): Promise<Purchase> {
-        const purchase = await this.prisma.purchase.findUnique({
-            where: { id },
-        });
-        if (!purchase) {
-            throw new NotFoundException(`Purchase with ID ${id} not found`);
-        }
-        return purchase;
+    protected getModelDelegate() {
+        return this.prisma.purchase;
     }
 
     async FindPurchaseByCreatedAt(createdAt: Date): Promise<Purchase[]> {
-        const purchase = await this.prisma.purchase.findMany({
-            where: { createdAt },
-        });
-        if (purchase.length === 0) {
-            throw new NotFoundException('Purchase not found')
-        }
-        return purchase;
+        return this.findManyBy({ createdAt });
     }
 
-    // return the five latest purchases by userId
     async findFivePurchaseByUser(userId: number): Promise<Purchase[]> {
-        const findFivePurchase = await this.prisma.purchase.findMany({
-            where: { userId: userId },
-            orderBy: { id: 'desc' },
-            take: 5,
-            include: {
-                product: {
-                    select: {
-                        id: true,
-                        name: true,
-                        price: true,
-                        image: true,
-                        category: true
-                    }
-                }
-            }
-        });
-        return findFivePurchase;
-    }
-
-    async create(CreatePurchaseDto: CreatePurchaseDto): Promise<Purchase> {
-        return this.prisma.purchase.create({
-            data: CreatePurchaseDto,
-        });
+        return this.findManyBy(
+            { userId },
+            {
+                orderBy: { id: 'desc' },
+                take: 5,
+                include: {
+                    product: {
+                        select: {
+                            id: true,
+                            name: true,
+                            price: true,
+                            image: true,
+                            category: true,
+                        },
+                    },
+                },
+            },
+        );
     }
 
     async createBulk(createBulkPurchaseDto: CreateBulkPurchaseDto): Promise<Purchase[]> {
@@ -82,25 +69,30 @@ export class PurchaseService {
         return purchases;
     }
 
-    async update(id: number, UpdatePurchaseDto: UpdatePurchaseDto): Promise<Purchase> {
-        await this.findOne(id);
-        return this.prisma.purchase.update({
-            where: { id },
-            data: {
-                userId: UpdatePurchaseDto.userId,
-                productId: UpdatePurchaseDto.productId,
-                quantity: UpdatePurchaseDto.quantity,
-                total: UpdatePurchaseDto.total,
-                orderId: UpdatePurchaseDto.orderId,
-            } as Prisma.PurchaseUncheckedUpdateInput,
-        });
-    }
+    async update(id: number, UpdatePurchaseDto: UpdatePurchaseDto): Promise<Result<Purchase, string>> {
+        const findResult = await this.findOne(id);
+        
+        if (findResult.isErr()) {
+            return findResult;
+        }
 
-    async remove(id: number): Promise<Purchase> {
-        await this.findOne(id);
-
-        return this.prisma.purchase.delete({
-            where: { id },
-        });
+        try {
+            const entity = await this.getModelDelegate().update({
+                where: { id },
+                data: {
+                    userId: UpdatePurchaseDto.userId,
+                    productId: UpdatePurchaseDto.productId,
+                    quantity: UpdatePurchaseDto.quantity,
+                    total: UpdatePurchaseDto.total,
+                    orderId: UpdatePurchaseDto.orderId,
+                } as Prisma.PurchaseUncheckedUpdateInput,
+            });
+            return Ok(entity);
+        } catch (error: any) {
+            if (error.code === 'P2002') {
+                return Err(`Unique constraint violation: ${error.meta?.target?.join(', ') || 'field'}`);
+            }
+            throw error;
+        }
     }
 }
